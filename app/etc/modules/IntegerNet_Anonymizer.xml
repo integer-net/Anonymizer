@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category    IntegerNet
+ * @package     IntegerNet_Anonymizer
+ * @author      Andreas von Studnitz <avs@integer-net.de>
+ */
+-->
+<config>
+    <modules>
+        <IntegerNet_Anonymizer>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Customer />
+            </depends>
+        </IntegerNet_Anonymizer>
+    </modules>
+</config>
