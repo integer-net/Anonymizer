@@ -18,7 +18,8 @@ class IntegerNet_Anonymizer_Model_Customer
     {
         /** @var $customers Mage_Customer_Model_Resource_Customer_Collection */
         $customers = Mage::getModel('customer/customer')
-            ->getCollection();
+            ->getCollection()
+            ->addAttributeToSelect(array('firstname', 'lastname'));
 
         $customerCount = $customers->getSize();
 
@@ -49,7 +50,7 @@ class IntegerNet_Anonymizer_Model_Customer
         $customer->setData('firstname', $randomData['first_name']);
         $customer->setData('middlename', '');
         $customer->setData('lastname', $randomData['last_name']);
-        $customer->setData('suffix', $randomData['suffix']);
+        $customer->setData('suffix', '');
         $customer->setData('email', $randomData['email']);
         $customer->getResource()->save($customer);
 
@@ -76,6 +77,33 @@ class IntegerNet_Anonymizer_Model_Customer
     protected function _anonymizeCustomerAddresses($customer, $randomData)
     {
 
+        $customerAddresses = $customer->getAddressesCollection()
+            ->addAttributeToSelect(array('prefix', 'firstname', 'lastname', 'suffix'));
+
+        foreach($customerAddresses as $customerAddress) {
+
+            /** @var $customerAddres Mage_Customer_Model_Address */
+            if ($customerAddress->getFirstname() == $customer->getOrigData('firstname')
+                && $customerAddress->getLastname() == $customer->getOrigData('lastname')) {
+
+                $newRandomData = $randomData;
+            } else {
+                $newRandomData = $this->_getRandomData();
+            }
+
+            $customerAddress->setData('prefix', $newRandomData['prefix']);
+            $customerAddress->setData('firstname', $newRandomData['first_name']);
+            $customerAddress->setData('middlename', '');
+            $customerAddress->setData('lastname', $newRandomData['last_name']);
+            $customerAddress->setData('suffix', '');
+            if ($customerAddress->getCompany()) {
+                $customerAddress->setData('company', $newRandomData['bs']);
+            }
+            $customerAddress->setData('street', $newRandomData['street_address']);
+            $customerAddress->setData('telephone', 'none');
+
+            $customerAddress->getResource()->save($customerAddress);
+        }
     }
 
     /**
