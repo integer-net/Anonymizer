@@ -43,11 +43,7 @@ class IntegerNet_Anonymizer_Model_Customer
      */
     protected function _anonymizeCustomer($customer)
     {
-        $randomData = array_pop($this->_unusedCustomerData);
-        if (is_null($randomData)) {
-            $this->_fetchRandomCustomerData(1);
-            $randomData = array_pop($this->_unusedCustomerData);
-        }
+        $randomData = $this->_getRandomData();
 
         $customer->setData('prefix', $randomData['prefix']);
         $customer->setData('firstname', $randomData['first_name']);
@@ -56,6 +52,30 @@ class IntegerNet_Anonymizer_Model_Customer
         $customer->setData('suffix', $randomData['suffix']);
         $customer->setData('email', $randomData['email']);
         $customer->getResource()->save($customer);
+
+        $this->_anonymizeCustomerAddresses($customer, $randomData);
+    }
+
+    /**
+     * @return array
+     */
+    protected function _getRandomData()
+    {
+        $randomData = array_pop($this->_unusedCustomerData);
+        if (is_null($randomData)) {
+            $this->_fetchRandomCustomerData(100);
+            $randomData = array_pop($this->_unusedCustomerData);
+        }
+        return $randomData;
+    }
+
+    /**
+     * @param Mage_Customer_Model_Customer $customer
+     * @param array $randomData
+     */
+    protected function _anonymizeCustomerAddresses($customer, $randomData)
+    {
+
     }
 
     /**
