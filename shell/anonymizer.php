@@ -41,8 +41,8 @@ class Mage_Shell_Anonymizer extends Mage_Shell_Abstract
      */
     public function run()
     {
-        /** @var $anonymizer IntegerNet_Anonymizer_Model_Anonymizer */
         try {
+            /** @var $anonymizer IntegerNet_Anonymizer_Model_Anonymizer */
             $anonymizer = Mage::getModel('anonymizer/anonymizer');
             $anonymizer->anonymizeAll();
             foreach ($anonymizer->getResults() as $resultLabel => $resultCount) {

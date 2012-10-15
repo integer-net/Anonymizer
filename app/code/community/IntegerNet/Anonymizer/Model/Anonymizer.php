@@ -558,7 +558,7 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     {
         return array(
             'Customers' => sizeof($this->_anonymizedCustomerIds),
-            'Customers Addresses' => sizeof($this->_anonymizedCustomerAddressIds),
+            'Customer Addresses' => sizeof($this->_anonymizedCustomerAddressIds),
             'Orders' => sizeof($this->_anonymizedOrderIds),
             'Order Addresses' => sizeof($this->_anonymizedOrderAddressIds),
             'Quotes' => sizeof($this->_anonymizedQuoteIds),
