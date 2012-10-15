@@ -19,7 +19,7 @@ class IntegerNet_Anonymizer_Model_Customer
         /** @var $customers Mage_Customer_Model_Resource_Customer_Collection */
         $customers = Mage::getModel('customer/customer')
             ->getCollection()
-            ->addAttributeToSelect(array('firstname', 'lastname'));
+            ->addAttributeToSelect(array('prefix', 'firstname', 'lastname', 'suffix'));
 
         $customerCount = $customers->getSize();
 
@@ -46,12 +46,18 @@ class IntegerNet_Anonymizer_Model_Customer
     {
         $randomData = $this->_getRandomData();
 
-        $customer->setData('prefix', $randomData['prefix']);
-        $customer->setData('firstname', $randomData['first_name']);
-        $customer->setData('middlename', '');
-        $customer->setData('lastname', $randomData['last_name']);
-        $customer->setData('suffix', '');
-        $customer->setData('email', $randomData['email']);
+        foreach ($this->_getCustomerMapping() as $customerKey => $randomDataKey) {
+            if (!$customer->getData($customerKey)) {
+                continue;
+            }
+
+            if (strlen($randomDataKey)) {
+                $customer->setData($customerKey, $randomData[$randomDataKey]);
+            } else {
+                $customer->setData($customerKey, '');
+            }
+        }
+
         $customer->getResource()->save($customer);
 
         $this->_anonymizeCustomerAddresses($customer, $randomData);
@@ -76,13 +82,12 @@ class IntegerNet_Anonymizer_Model_Customer
      */
     protected function _anonymizeCustomerAddresses($customer, $randomData)
     {
-
         $customerAddresses = $customer->getAddressesCollection()
             ->addAttributeToSelect(array('prefix', 'firstname', 'lastname', 'suffix'));
 
         foreach($customerAddresses as $customerAddress) {
 
-            /** @var $customerAddres Mage_Customer_Model_Address */
+            /** @var $customerAddress Mage_Customer_Model_Address */
             if ($customerAddress->getFirstname() == $customer->getOrigData('firstname')
                 && $customerAddress->getLastname() == $customer->getOrigData('lastname')) {
 
@@ -91,29 +96,54 @@ class IntegerNet_Anonymizer_Model_Customer
                 $newRandomData = $this->_getRandomData();
             }
 
-            $customerAddress->setData('prefix', $newRandomData['prefix']);
-            $customerAddress->setData('firstname', $newRandomData['first_name']);
-            $customerAddress->setData('middlename', '');
-            $customerAddress->setData('lastname', $newRandomData['last_name']);
-            $customerAddress->setData('suffix', '');
-            if ($customerAddress->getCompany()) {
-                $customerAddress->setData('company', $newRandomData['bs']);
+            foreach ($this->_getAddressMapping() as $addressKey => $randomDataKey) {
+                if (!$customerAddress->getData($addressKey)) {
+                    continue;
+                }
+
+                if (strlen($randomDataKey)) {
+                    $customerAddress->setData($addressKey, $newRandomData[$randomDataKey]);
+                } else {
+                    $customerAddress->setData($addressKey, '');
+                }
             }
-            $customerAddress->setData('street', $newRandomData['street_address']);
-            $customerAddress->setData('telephone', 'none');
 
             $customerAddress->getResource()->save($customerAddress);
         }
     }
 
     /**
-     * @param Mage_Customer_Model_Customer $customer
-     * @param string $attributeCode
-     * @param mixed $value
+     * @return array
      */
-    protected function setData($customer, $attributeCode, $value)
+    protected function _getCustomerMapping()
     {
-        $customer->setData($attributeCode, $value);
+        return array(
+            'prefix' => 'prefix',
+            'firstname' => 'first_name',
+            'middlename' => '',
+            'lastname' => 'last_name',
+            'suffix' => 'suffix',
+            'email' => 'email',
+        );
+    }
+
+    /**
+     * @return array
+     */
+    protected function _getAddressMapping()
+    {
+        return array(
+            'prefix' => 'prefix',
+            'firstname' => 'first_name',
+            'middlename' => '',
+            'lastname' => 'last_name',
+            'suffix' => 'suffix',
+            'company' => 'bs',
+            'street' => 'street_address',
+            'telephone' => 'zip_code',
+            'fax' => '',
+            'vat_id' => '',
+        );
     }
 
     /**
