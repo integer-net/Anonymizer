@@ -9,6 +9,8 @@
 class IntegerNet_Anonymizer_Model_Anonymizer
 {
     protected $_unusedCustomerData = array();
+    protected $_anonymizedCustomerIds = array();
+    protected $_anonymizedCustomerAddressIds = array();
     protected $_anonymizedOrderIds = array();
     protected $_anonymizedOrderAddressIds = array();
     protected $_anonymizedQuoteIds = array();
@@ -30,6 +32,22 @@ class IntegerNet_Anonymizer_Model_Anonymizer
 
         $this->_anonymizeRemainingOrders();
         $this->_anonymizeRemainingQuotes();
+
+        $this->_anonymizeRemainingOrderAddresses();
+        $this->_anonymizeRemainingQuoteAddresses();
+    }
+
+    public function getResults()
+    {
+        return array(
+            'Customers' => sizeof($this->_anonymizedCustomerIds),
+            'Customers Addresses' => sizeof($this->_anonymizedCustomerAddressIds),
+            'Orders' => sizeof($this->_anonymizedOrderIds),
+            'Order Addresses' => sizeof($this->_anonymizedOrderAddressIds),
+            'Quotes' => sizeof($this->_anonymizedQuoteIds),
+            'Quote Addresses' => sizeof($this->_anonymizedQuoteAddressIds),
+            'Newsletter Subscribers' => sizeof($this->_anonymizedNewsletterSubscriberIds),
+        );
     }
 
     /**
@@ -63,6 +81,7 @@ class IntegerNet_Anonymizer_Model_Anonymizer
         }
 
         $customer->getResource()->save($customer);
+        $this->_anonymizedCustomerIds[] = $customer->getId();
 
         $this->_anonymizeQuotes($customer, $randomData);
         $this->_anonymizeOrders($customer, $randomData);
@@ -129,6 +148,50 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     }
 
     /**
+     * @param Mage_Sales_Model_Order $order
+     * @param array $randomData
+     */
+    protected function _anonymizeOrder($order, $randomData)
+    {
+        /** @var $order Mage_Sales_Model_Order */
+        foreach ($this->_getOrderMapping() as $orderKey => $randomDataKey) {
+            if (!$order->getData($orderKey)) {
+                continue;
+            }
+
+            if (strlen($randomDataKey)) {
+                $order->setData($orderKey, $randomData[$randomDataKey]);
+            } else {
+                $order->setData($orderKey, '');
+            }
+        }
+
+        $order->getResource()->save($order);
+        $this->_anonymizedOrderIds[] = $order->getId();
+
+        /* @var $quote Mage_Sales_Model_Quote */
+        $quote = Mage::getModel('sales/quote')->load($order->getQuoteId());
+        if ($quote->getId()) {
+            $this->_anonymizeQuote($quote, $randomData);
+        }
+    }
+
+    /**
+     * @param Mage_Customer_Model_Customer $customer
+     * @param array $randomData
+     */
+    protected function _anonymizeQuotes($customer, $randomData)
+    {
+        $quotes = Mage::getModel('sales/quote')
+            ->getCollection()
+            ->addFieldToFilter('customer_id', $customer->getId());
+
+        foreach($quotes as $quote) {
+            $this->_anonymizeQuote($quote, $randomData);
+        }
+    }
+
+    /**
      *
      */
     protected function _anonymizeRemainingQuotes()
@@ -160,45 +223,6 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     }
 
     /**
-     * @param Mage_Sales_Model_Order $order
-     * @param array $randomData
-     */
-    protected function _anonymizeOrder($order, $randomData)
-    {
-        /** @var $order Mage_Sales_Model_Order */
-        foreach ($this->_getOrderMapping() as $orderKey => $randomDataKey) {
-            if (!$order->getData($orderKey)) {
-                continue;
-            }
-
-            if (strlen($randomDataKey)) {
-                $order->setData($orderKey, $randomData[$randomDataKey]);
-            } else {
-                $order->setData($orderKey, '');
-            }
-        }
-
-        $order->getResource()->save($order);
-
-        $this->_anonymizedOrderIds[] = $order->getId();
-    }
-
-    /**
-     * @param Mage_Customer_Model_Customer $customer
-     * @param array $randomData
-     */
-    protected function _anonymizeQuotes($customer, $randomData)
-    {
-        $quotes = Mage::getModel('sales/quote')
-            ->getCollection()
-            ->addFieldToFilter('customer_id', $customer->getId());
-
-        foreach($quotes as $quote) {
-            $this->_anonymizeQuote($quote, $randomData);
-        }
-    }
-
-    /**
      * @param Mage_Sales_Model_Quote $quote
      * @param array $randomData
      */
@@ -218,7 +242,6 @@ class IntegerNet_Anonymizer_Model_Anonymizer
         }
 
         $quote->getResource()->save($quote);
-
         $this->_anonymizedQuoteIds[] = $quote->getId();
     }
 
@@ -265,6 +288,7 @@ class IntegerNet_Anonymizer_Model_Anonymizer
         }
 
         $customerAddress->getResource()->save($customerAddress);
+        $this->_anonymizedCustomerAddressIds[] = $customerAddress->getId();
 
         $this->_anonymizeQuoteAddresses($customerAddress, $randomData);
         $this->_anonymizeOrderAddresses($customerAddress, $randomData);
@@ -281,6 +305,23 @@ class IntegerNet_Anonymizer_Model_Anonymizer
             ->addFieldToFilter('customer_address_id', $customerAddress->getId());
 
         foreach($quoteAddresses as $quoteAddress) {
+            $this->_anonymizeQuoteAddress($quoteAddress, $randomData);
+        }
+    }
+
+    /**
+     *
+     */
+    protected function _anonymizeRemainingQuoteAddresses()
+    {
+        $quoteAddresses = Mage::getModel('sales/quote_address')
+            ->getCollection()
+            ->addFieldToFilter('address_id', array('nin' => $this->_anonymizedOrderAddressIds));
+
+        foreach($quoteAddresses as $quoteAddress) {
+
+            /** @var $quoteAddress Mage_Sales_Model_Quote_Address */
+            $randomData = $this->_getRandomData();
             $this->_anonymizeQuoteAddress($quoteAddress, $randomData);
         }
     }
@@ -324,6 +365,23 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     }
 
     /**
+     *
+     */
+    protected function _anonymizeRemainingOrderAddresses()
+    {
+        $orderAddresses = Mage::getModel('sales/order_address')
+            ->getCollection()
+            ->addFieldToFilter('entity_id', array('nin' => $this->_anonymizedOrderAddressIds));
+
+        foreach($orderAddresses as $orderAddress) {
+
+            /** @var $orderAddress Mage_Sales_Model_Order_Address */
+            $randomData = $this->_getRandomData();
+            $this->_anonymizeOrderAddress($orderAddress, $randomData);
+        }
+    }
+
+    /**
      * @param Mage_Sales_Model_Order_Address $orderAddress
      * @param array $randomData
      */
@@ -343,6 +401,12 @@ class IntegerNet_Anonymizer_Model_Anonymizer
 
         $orderAddress->getResource()->save($orderAddress);
         $this->_anonymizedOrderAddressIds[] = $orderAddress->getId();
+
+        /* @var $quoteAddress Mage_Sales_Model_Quote_Address */
+        $quoteAddress = Mage::getModel('sales/quote_address')->load($orderAddress->getQuoteAddressId());
+        if ($quoteAddress->getId()) {
+            $this->_anonymizeQuoteAddress($quoteAddress, $randomData);
+        }
     }
 
     /**
