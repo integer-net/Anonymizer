@@ -12,15 +12,17 @@ Facts
 Description
 -----------
 The extension anonymizes customer data from the following data objects:
-    Customers
-    Customers Addresses
-    Orders
-    Order Addresses
-    Quotes
-    Quote Addresses
-    Newsletter Subscribers
+- Customers
+- Customers Addresses
+- Orders
+- Order Addresses
+- Quotes
+- Quote Addresses
+- Newsletter Subscribers
 Data is taken from http://fakester.biz.
+
 Zipcode, City, State and Country aren't anonymized so shipping and tax calculations still work correctly.
+
 Relations stay intact, so customer addresses and order addresses still match the customer data after anonymization.
 
 Requirements
@@ -39,7 +41,7 @@ Installation Instructions
 -------------------------
 1. Download the extension from the link above and copy all the files into your document root (except this readme.txt).
 2. Clear the cache, logout from the admin panel and then login again.
-3. Call the extension from from System -> Tools -> Anonymizer
+3. Call the extension from from System -> Tools -> Anonymizer.
 4. Alternatively, call the extension via shell: php -f shell/anonymizer.php
 
 Support
@@ -53,7 +55,9 @@ Any contribution is highly appreciated. The best way to contribute code is to op
 Developer
 ---------
 Andreas von Studnitz
+
 [http://www.integer-net.de](http://www.integer-net.de)
+
 [@avstudnitz](https://twitter.com/avstudnitz)
 
 Licence
