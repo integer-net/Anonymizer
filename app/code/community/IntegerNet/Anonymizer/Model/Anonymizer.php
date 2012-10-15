@@ -37,19 +37,6 @@ class IntegerNet_Anonymizer_Model_Anonymizer
         $this->_anonymizeRemainingQuoteAddresses();
     }
 
-    public function getResults()
-    {
-        return array(
-            'Customers' => sizeof($this->_anonymizedCustomerIds),
-            'Customers Addresses' => sizeof($this->_anonymizedCustomerAddressIds),
-            'Orders' => sizeof($this->_anonymizedOrderIds),
-            'Order Addresses' => sizeof($this->_anonymizedOrderAddressIds),
-            'Quotes' => sizeof($this->_anonymizedQuoteIds),
-            'Quote Addresses' => sizeof($this->_anonymizedQuoteAddressIds),
-            'Newsletter Subscribers' => sizeof($this->_anonymizedNewsletterSubscriberIds),
-        );
-    }
-
     /**
      * @param Mage_Customer_Model_Resource_Customer_Collection $customers
      */
@@ -316,7 +303,7 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     {
         $quoteAddresses = Mage::getModel('sales/quote_address')
             ->getCollection()
-            ->addFieldToFilter('address_id', array('nin' => $this->_anonymizedOrderAddressIds));
+            ->addFieldToFilter('address_id', array('nin' => $this->_anonymizedQuoteAddressIds));
 
         foreach($quoteAddresses as $quoteAddress) {
 
@@ -521,5 +508,21 @@ class IntegerNet_Anonymizer_Model_Anonymizer
          */
 
         return $this->_unusedCustomerData;
+    }
+
+    /**
+     * @return array
+     */
+    public function getResults()
+    {
+        return array(
+            'Customers' => sizeof($this->_anonymizedCustomerIds),
+            'Customers Addresses' => sizeof($this->_anonymizedCustomerAddressIds),
+            'Orders' => sizeof($this->_anonymizedOrderIds),
+            'Order Addresses' => sizeof($this->_anonymizedOrderAddressIds),
+            'Quotes' => sizeof($this->_anonymizedQuoteIds),
+            'Quote Addresses' => sizeof($this->_anonymizedQuoteAddressIds),
+            'Newsletter Subscribers' => sizeof($this->_anonymizedNewsletterSubscriberIds),
+        );
     }
 }
