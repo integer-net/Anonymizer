@@ -30,6 +30,8 @@ class IntegerNet_Anonymizer_Model_Anonymizer
 
         $this->_anonymizeCustomers($customers);
 
+        $this->_anonymizeRemainingNewsletterSubscribers();
+
         $this->_anonymizeRemainingOrders();
         $this->_anonymizeRemainingQuotes();
 
@@ -70,22 +72,16 @@ class IntegerNet_Anonymizer_Model_Anonymizer
         $customer->getResource()->save($customer);
         $this->_anonymizedCustomerIds[] = $customer->getId();
 
+        /* @var $subscriber Mage_Newsletter_Model_Subscriber */
+        $subscriber = Mage::getModel('newsletter/subscriber');
+        $subscriber->loadByEmail($customer->getOrigData('email'));
+        if ($subscriber->getId()) {
+            $this->_anonymizeNewsletterSubscriber($subscriber, $randomData);
+        }
+
         $this->_anonymizeQuotes($customer, $randomData);
         $this->_anonymizeOrders($customer, $randomData);
         $this->_anonymizeCustomerAddresses($customer, $randomData);
-    }
-
-    /**
-     * @return array
-     */
-    protected function _getRandomData()
-    {
-        $randomData = array_pop($this->_unusedCustomerData);
-        if (is_null($randomData)) {
-            $this->_fetchRandomCustomerData(100);
-            $randomData = array_pop($this->_unusedCustomerData);
-        }
-        return $randomData;
     }
 
     /**
@@ -397,6 +393,35 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     }
 
     /**
+     *
+     */
+    protected function _anonymizeRemainingNewsletterSubscribers()
+    {
+        $newsletterSubscribers = Mage::getModel('newsletter/subscriber')
+            ->getCollection()
+            ->addFieldToFilter('subscriber_id', array('nin' => $this->_anonymizedNewsletterSubscriberIds));
+
+        foreach($newsletterSubscribers as $newsletterSubscriber) {
+
+            /** @var $newsletterSubscriber Mage_Newsletter_Model_Subscriber */
+            $randomData = $this->_getRandomData();
+            $this->_anonymizeNewsletterSubscriber($newsletterSubscriber, $randomData);
+        }
+    }
+
+    /**
+     * @param Mage_Newsletter_Model_Subscriber $subscriber
+     * @param array $randomData
+     */
+    protected function _anonymizeNewsletterSubscriber($subscriber, $randomData)
+    {
+        $subscriber->setData('subscriber_email', $randomData['email']);
+        $subscriber->getResource()->save($subscriber);
+
+        $this->_anonymizedNewsletterSubscriberIds[] = $subscriber->getId();
+    }
+
+    /**
      * @return array
      */
     protected function _getCustomerMapping()
@@ -466,6 +491,19 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     }
 
     /**
+     * @return array
+     */
+    protected function _getRandomData()
+    {
+        $randomData = array_pop($this->_unusedCustomerData);
+        if (is_null($randomData)) {
+            $this->_fetchRandomCustomerData(100);
+            $randomData = array_pop($this->_unusedCustomerData);
+        }
+        return $randomData;
+    }
+
+    /**
      * @param int $count
      * @return array
      */
@@ -473,6 +511,9 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     {
         $url = "http://fakester.biz/json?n=$count";
         $json = file_get_contents($url);
+        if ($json === false) {
+            Mage::throwException('Connection to http://fakester.biz failed.');
+        }
         $this->_unusedCustomerData = Zend_Json::decode($json);
 
         /*
