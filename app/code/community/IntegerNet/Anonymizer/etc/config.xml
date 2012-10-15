@@ -18,6 +18,11 @@
                 <class>IntegerNet_Anonymizer_Model</class>
             </anonymizer>
         </models>
+        <blocks>
+            <anonymizer>
+                <class>IntegerNet_Anonymizer_Block</class>
+            </anonymizer>
+        </blocks>
         <helpers>
             <anonymizer>
                 <class>IntegerNet_Anonymizer_Helper</class>
@@ -25,7 +30,7 @@
         </helpers>
     </global>
     <admin>
-         <routers>
+        <routers>
             <adminhtml>
                 <args>
                     <modules>
@@ -45,12 +50,40 @@
                 </IntegerNet_Anonymizer>
             </modules>
         </translate>
-        <layout>
-            <updates>
-                <anonymizer>
-                    <file>anonymizer.xml</file>
-                </anonymizer>
-            </updates>
-        </layout>
+        <menu>
+            <system>
+                <children>
+                    <tools>
+                        <children>
+                            <setup translate="title">
+                                <title>Anonymizer</title>
+                                <action>adminhtml/anonymizer</action>
+                                <sort_order>0</sort_order>
+                            </setup>
+                        </children>
+                    </tools>
+                </children>
+            </system>
+        </menu>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <tools>
+                                    <children>
+                                        <anonymizer translate="title">
+                                            <title>Anonymizer</title>
+                                            <sort_order>0</sort_order>
+                                        </anonymizer>
+                                    </children>
+                                </tools>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
     </adminhtml>
 </config>
