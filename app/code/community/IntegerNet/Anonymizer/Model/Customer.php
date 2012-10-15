@@ -9,9 +9,10 @@
 class IntegerNet_Anonymizer_Model_Customer
 {
     protected $_unusedCustomerData = array();
-    protected $_anonymizedOrders = array();
-    protected $_anonymizedQuotes = array();
-    protected $_anonymizedNewsletterSubscribers = array();
+    protected $_anonymizedOrderIds = array();
+    protected $_anonymizedOrderAddressIds = array();
+    protected $_anonymizedQuoteAddressIds = array();
+    protected $_anonymizedNewsletterSubscriberIds = array();
 
 
     public function anonymizeAll()
@@ -23,7 +24,7 @@ class IntegerNet_Anonymizer_Model_Customer
 
         $customerCount = $customers->getSize();
 
-        $this->_fetchRandomCustomerData($customerCount);
+        $this->_fetchRandomCustomerData($customerCount * 2);
 
         $this->_anonymizeCustomers($customers);
     }
@@ -60,6 +61,7 @@ class IntegerNet_Anonymizer_Model_Customer
 
         $customer->getResource()->save($customer);
 
+        $this->_anonymizeOrders($customer, $randomData);
         $this->_anonymizeCustomerAddresses($customer, $randomData);
     }
 
@@ -74,6 +76,37 @@ class IntegerNet_Anonymizer_Model_Customer
             $randomData = array_pop($this->_unusedCustomerData);
         }
         return $randomData;
+    }
+
+    /**
+     * @param Mage_Customer_Model_Customer $customer
+     * @param array $randomData
+     */
+    protected function _anonymizeOrders($customer, $randomData)
+    {
+        $orders = Mage::getModel('sales/order')
+            ->getCollection()
+            ->addFieldToFilter('customer_email', $customer->getOrigData('email'));
+
+        foreach($orders as $order) {
+
+            /** @var $order Mage_Sales_Model_Order */
+            foreach ($this->_getOrderMapping() as $orderKey => $randomDataKey) {
+                if (!$order->getData($orderKey)) {
+                    continue;
+                }
+
+                if (strlen($randomDataKey)) {
+                    $order->setData($orderKey, $randomData[$randomDataKey]);
+                } else {
+                    $order->setData($orderKey, '');
+                }
+            }
+
+            $order->getResource()->save($order);
+
+            $this->_anonymizedOrderIds[] = $order->getId();
+        }
     }
 
     /**
@@ -96,20 +129,69 @@ class IntegerNet_Anonymizer_Model_Customer
                 $newRandomData = $this->_getRandomData();
             }
 
-            foreach ($this->_getAddressMapping() as $addressKey => $randomDataKey) {
-                if (!$customerAddress->getData($addressKey)) {
-                    continue;
-                }
+            $this->_anonymizeCustomerAddress($customerAddress, $newRandomData);
+        }
+    }
 
-                if (strlen($randomDataKey)) {
-                    $customerAddress->setData($addressKey, $newRandomData[$randomDataKey]);
-                } else {
-                    $customerAddress->setData($addressKey, '');
-                }
+    /**
+     * @param Mage_Customer_Model_Address $customerAddress
+     * @param array $randomData
+     */
+    protected function _anonymizeCustomerAddress($customerAddress, $randomData)
+    {
+        foreach ($this->_getAddressMapping() as $addressKey => $randomDataKey) {
+            if (!$customerAddress->getData($addressKey)) {
+                continue;
             }
 
-            $customerAddress->getResource()->save($customerAddress);
+            if (strlen($randomDataKey)) {
+                $customerAddress->setData($addressKey, $randomData[$randomDataKey]);
+            } else {
+                $customerAddress->setData($addressKey, '');
+            }
         }
+
+        $customerAddress->getResource()->save($customerAddress);
+
+        $this->_anonymizeOrderAddresses($customerAddress, $randomData);
+    }
+
+    /**
+     * @param Mage_Customer_Model_Address $customerAddress
+     * @param array $randomData
+     */
+    protected function _anonymizeOrderAddresses($customerAddress, $randomData)
+    {
+        $orderAddresses = Mage::getModel('sales/order_address')
+            ->getCollection()
+            ->addFieldToFilter('customer_address_id', $customerAddress->getId());
+
+        foreach($orderAddresses as $orderAddress) {
+            $this->_anonymizeOrderAddress($orderAddress, $randomData);
+        }
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Address $orderAddress
+     * @param array $randomData
+     */
+    protected function _anonymizeOrderAddress($orderAddress, $randomData)
+    {
+        /** @var $orderAddress Mage_Sales_Model_Order_Address */
+        foreach ($this->_getAddressMapping() as $addressKey => $randomDataKey) {
+            if (!$orderAddress->getData($addressKey)) {
+                continue;
+            }
+
+            if (strlen($randomDataKey)) {
+                $orderAddress->setData($addressKey, $randomData[$randomDataKey]);
+            } else {
+                $orderAddress->setData($addressKey, '');
+            }
+        }
+
+        $orderAddress->getResource()->save($orderAddress);
+        $this->_anonymizedOrderAddressIds[] = $orderAddress->getId();
     }
 
     /**
@@ -124,6 +206,22 @@ class IntegerNet_Anonymizer_Model_Customer
             'lastname' => 'last_name',
             'suffix' => 'suffix',
             'email' => 'email',
+        );
+    }
+
+    /**
+     * @return array
+     */
+    protected function _getOrderMapping()
+    {
+        return array(
+            'customer_prefix' => 'prefix',
+            'customer_firstname' => 'first_name',
+            'customer_middlename' => '',
+            'customer_lastname' => 'last_name',
+            'customer_suffix' => 'suffix',
+            'customer_email' => 'email',
+            'customer_taxvat' => '',
         );
     }
 
