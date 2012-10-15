@@ -41,7 +41,7 @@ class Mage_Shell_Anonymizer extends Mage_Shell_Abstract
      */
     public function run()
     {
-        Mage::getModel('anonymizer/customer')->anonymizeAll();
+        Mage::getModel('anonymizer/anonymizer')->anonymizeAll();
     }
 
     /**

@@ -6,7 +6,7 @@
  * @package     IntegerNet_Anonymizer
  * @author      Andreas von Studnitz <avs@integer-net.de>
  */
-class IntegerNet_Anonymizer_Model_Customer
+class IntegerNet_Anonymizer_Model_Anonymizer
 {
     protected $_unusedCustomerData = array();
     protected $_anonymizedOrderIds = array();
@@ -14,7 +14,6 @@ class IntegerNet_Anonymizer_Model_Customer
     protected $_anonymizedQuoteIds = array();
     protected $_anonymizedQuoteAddressIds = array();
     protected $_anonymizedNewsletterSubscriberIds = array();
-
 
     public function anonymizeAll()
     {
@@ -28,6 +27,9 @@ class IntegerNet_Anonymizer_Model_Customer
         $this->_fetchRandomCustomerData($customerCount * 2);
 
         $this->_anonymizeCustomers($customers);
+
+        $this->_anonymizeRemainingOrders();
+        $this->_anonymizeRemainingQuotes();
     }
 
     /**
@@ -91,24 +93,94 @@ class IntegerNet_Anonymizer_Model_Customer
             ->addFieldToFilter('customer_email', $customer->getOrigData('email'));
 
         foreach($orders as $order) {
+            $this->_anonymizeOrder($order, $randomData);
+        }
+    }
+
+    /**
+     *
+     */
+    protected function _anonymizeRemainingOrders()
+    {
+        $orders = Mage::getModel('sales/order')
+            ->getCollection()
+            ->addFieldToFilter('entity_id', array('nin' => $this->_anonymizedOrderIds));
+
+        foreach($orders as $order) {
 
             /** @var $order Mage_Sales_Model_Order */
-            foreach ($this->_getOrderMapping() as $orderKey => $randomDataKey) {
-                if (!$order->getData($orderKey)) {
-                    continue;
+            $randomData = $this->_getRandomData();
+            $this->_anonymizeOrder($order, $randomData);
+
+            foreach($order->getAddressesCollection() as $orderAddress) {
+
+                /** @var $orderAddress Mage_Sales_Model_Order_Address */
+                if ($orderAddress->getCustomerFirstname() == $order->getOrigData('customer_firstname')
+                    && $orderAddress->getCustomerLastname() == $order->getOrigData('customer_lastname')) {
+
+                    $newRandomData = $randomData;
+                } else {
+                    $newRandomData = $this->_getRandomData();
                 }
 
-                if (strlen($randomDataKey)) {
-                    $order->setData($orderKey, $randomData[$randomDataKey]);
+                $this->_anonymizeOrderAddress($orderAddress, $newRandomData);
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    protected function _anonymizeRemainingQuotes()
+    {
+        $quotes = Mage::getModel('sales/quote')
+            ->getCollection()
+            ->addFieldToFilter('entity_id', array('nin' => $this->_anonymizedQuoteIds));
+
+        foreach($quotes as $quote) {
+
+            /** @var $quote Mage_Sales_Model_Quote */
+            $randomData = $this->_getRandomData();
+            $this->_anonymizeQuote($quote, $randomData);
+
+            foreach($quote->getAddressesCollection() as $quoteAddress) {
+
+                /** @var $quoteAddress Mage_Sales_Model_Quote_Address */
+                if ($quoteAddress->getCustomerFirstname() == $quote->getOrigData('customer_firstname')
+                    && $quoteAddress->getCustomerLastname() == $quote->getOrigData('customer_lastname')) {
+
+                    $newRandomData = $randomData;
                 } else {
-                    $order->setData($orderKey, '');
+                    $newRandomData = $this->_getRandomData();
                 }
+
+                $this->_anonymizeQuoteAddress($quoteAddress, $newRandomData);
+            }
+        }
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @param array $randomData
+     */
+    protected function _anonymizeOrder($order, $randomData)
+    {
+        /** @var $order Mage_Sales_Model_Order */
+        foreach ($this->_getOrderMapping() as $orderKey => $randomDataKey) {
+            if (!$order->getData($orderKey)) {
+                continue;
             }
 
-            $order->getResource()->save($order);
-
-            $this->_anonymizedOrderIds[] = $order->getId();
+            if (strlen($randomDataKey)) {
+                $order->setData($orderKey, $randomData[$randomDataKey]);
+            } else {
+                $order->setData($orderKey, '');
+            }
         }
+
+        $order->getResource()->save($order);
+
+        $this->_anonymizedOrderIds[] = $order->getId();
     }
 
     /**
@@ -122,24 +194,32 @@ class IntegerNet_Anonymizer_Model_Customer
             ->addFieldToFilter('customer_id', $customer->getId());
 
         foreach($quotes as $quote) {
+            $this->_anonymizeQuote($quote, $randomData);
+        }
+    }
 
-            /** @var $quote Mage_Sales_Model_Quote */
-            foreach ($this->_getQuoteMapping() as $quoteKey => $randomDataKey) {
-                if (!$quote->getData($quoteKey)) {
-                    continue;
-                }
-
-                if (strlen($randomDataKey)) {
-                    $quote->setData($quoteKey, $randomData[$randomDataKey]);
-                } else {
-                    $quote->setData($quoteKey, '');
-                }
+    /**
+     * @param Mage_Sales_Model_Quote $quote
+     * @param array $randomData
+     */
+    protected function _anonymizeQuote($quote, $randomData)
+    {
+        /** @var $quote Mage_Sales_Model_Quote */
+        foreach ($this->_getQuoteMapping() as $quoteKey => $randomDataKey) {
+            if (!$quote->getData($quoteKey)) {
+                continue;
             }
 
-            $quote->getResource()->save($quote);
-
-            $this->_anonymizedQuoteIds[] = $quote->getId();
+            if (strlen($randomDataKey)) {
+                $quote->setData($quoteKey, $randomData[$randomDataKey]);
+            } else {
+                $quote->setData($quoteKey, '');
+            }
         }
+
+        $quote->getResource()->save($quote);
+
+        $this->_anonymizedQuoteIds[] = $quote->getId();
     }
 
     /**
