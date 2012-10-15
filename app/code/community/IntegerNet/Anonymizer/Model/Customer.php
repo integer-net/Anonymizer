@@ -11,6 +11,7 @@ class IntegerNet_Anonymizer_Model_Customer
     protected $_unusedCustomerData = array();
     protected $_anonymizedOrderIds = array();
     protected $_anonymizedOrderAddressIds = array();
+    protected $_anonymizedQuoteIds = array();
     protected $_anonymizedQuoteAddressIds = array();
     protected $_anonymizedNewsletterSubscriberIds = array();
 
@@ -61,6 +62,7 @@ class IntegerNet_Anonymizer_Model_Customer
 
         $customer->getResource()->save($customer);
 
+        $this->_anonymizeQuotes($customer, $randomData);
         $this->_anonymizeOrders($customer, $randomData);
         $this->_anonymizeCustomerAddresses($customer, $randomData);
     }
@@ -113,6 +115,37 @@ class IntegerNet_Anonymizer_Model_Customer
      * @param Mage_Customer_Model_Customer $customer
      * @param array $randomData
      */
+    protected function _anonymizeQuotes($customer, $randomData)
+    {
+        $quotes = Mage::getModel('sales/quote')
+            ->getCollection()
+            ->addFieldToFilter('customer_id', $customer->getId());
+
+        foreach($quotes as $quote) {
+
+            /** @var $quote Mage_Sales_Model_Quote */
+            foreach ($this->_getQuoteMapping() as $quoteKey => $randomDataKey) {
+                if (!$quote->getData($quoteKey)) {
+                    continue;
+                }
+
+                if (strlen($randomDataKey)) {
+                    $quote->setData($quoteKey, $randomData[$randomDataKey]);
+                } else {
+                    $quote->setData($quoteKey, '');
+                }
+            }
+
+            $quote->getResource()->save($quote);
+
+            $this->_anonymizedQuoteIds[] = $quote->getId();
+        }
+    }
+
+    /**
+     * @param Mage_Customer_Model_Customer $customer
+     * @param array $randomData
+     */
     protected function _anonymizeCustomerAddresses($customer, $randomData)
     {
         $customerAddresses = $customer->getAddressesCollection()
@@ -153,8 +186,47 @@ class IntegerNet_Anonymizer_Model_Customer
 
         $customerAddress->getResource()->save($customerAddress);
 
+        $this->_anonymizeQuoteAddresses($customerAddress, $randomData);
         $this->_anonymizeOrderAddresses($customerAddress, $randomData);
     }
+
+    /**
+     * @param Mage_Customer_Model_Address $customerAddress
+     * @param array $randomData
+     */
+    protected function _anonymizeQuoteAddresses($customerAddress, $randomData)
+    {
+        $quoteAddresses = Mage::getModel('sales/quote_address')
+            ->getCollection()
+            ->addFieldToFilter('customer_address_id', $customerAddress->getId());
+
+        foreach($quoteAddresses as $quoteAddress) {
+            $this->_anonymizeQuoteAddress($quoteAddress, $randomData);
+        }
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote_Address $quoteAddress
+     * @param array $randomData
+     */
+    protected function _anonymizeQuoteAddress($quoteAddress, $randomData)
+    {
+        foreach ($this->_getAddressMapping() as $addressKey => $randomDataKey) {
+            if (!$quoteAddress->getData($addressKey)) {
+                continue;
+            }
+
+            if (strlen($randomDataKey)) {
+                $quoteAddress->setData($addressKey, $randomData[$randomDataKey]);
+            } else {
+                $quoteAddress->setData($addressKey, '');
+            }
+        }
+
+        $quoteAddress->getResource()->save($quoteAddress);
+        $this->_anonymizedQuoteAddressIds[] = $quoteAddress->getId();
+    }
+
 
     /**
      * @param Mage_Customer_Model_Address $customerAddress
@@ -177,7 +249,6 @@ class IntegerNet_Anonymizer_Model_Customer
      */
     protected function _anonymizeOrderAddress($orderAddress, $randomData)
     {
-        /** @var $orderAddress Mage_Sales_Model_Order_Address */
         foreach ($this->_getAddressMapping() as $addressKey => $randomDataKey) {
             if (!$orderAddress->getData($addressKey)) {
                 continue;
@@ -212,6 +283,23 @@ class IntegerNet_Anonymizer_Model_Customer
     /**
      * @return array
      */
+    protected function _getQuoteMapping()
+    {
+        return array(
+            'customer_prefix' => 'prefix',
+            'customer_firstname' => 'first_name',
+            'customer_middlename' => '',
+            'customer_lastname' => 'last_name',
+            'customer_suffix' => 'suffix',
+            'customer_email' => 'email',
+            'customer_taxvat' => '',
+            'remote_ip' => 'ip_v4_address',
+        );
+    }
+
+    /**
+     * @return array
+     */
     protected function _getOrderMapping()
     {
         return array(
@@ -222,6 +310,7 @@ class IntegerNet_Anonymizer_Model_Customer
             'customer_suffix' => 'suffix',
             'customer_email' => 'email',
             'customer_taxvat' => '',
+            'remote_ip' => 'ip_v4_address',
         );
     }
 
@@ -241,6 +330,7 @@ class IntegerNet_Anonymizer_Model_Customer
             'telephone' => 'zip_code',
             'fax' => '',
             'vat_id' => '',
+            'email' => 'email',
         );
     }
 
