@@ -19,6 +19,7 @@ The extension anonymizes customer data from the following data objects:
 - Quotes
 - Quote Addresses
 - Newsletter Subscribers
+
 Data is taken from http://fakester.biz.
 
 Zipcode, City, State and Country aren't anonymized so shipping and tax calculations still work correctly.
