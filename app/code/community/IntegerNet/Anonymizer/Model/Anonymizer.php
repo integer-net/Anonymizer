@@ -17,6 +17,8 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     protected $_anonymizedQuoteAddressIds = array();
     protected $_anonymizedNewsletterSubscriberIds = array();
 
+    const MAX_FAKESTER_REQUEST_COUNT = 100;
+
     public function anonymizeAll()
     {
         /** @var $customers Mage_Customer_Model_Resource_Customer_Collection */
@@ -24,9 +26,7 @@ class IntegerNet_Anonymizer_Model_Anonymizer
             ->getCollection()
             ->addAttributeToSelect(array('prefix', 'firstname', 'lastname', 'suffix'));
 
-        $customerCount = $customers->getSize();
-
-        $this->_fetchRandomCustomerData($customerCount * 2);
+        $this->_fetchRandomCustomerData($customers->getSize() * 2);
 
         $this->_anonymizeCustomers($customers);
 
@@ -509,6 +509,7 @@ class IntegerNet_Anonymizer_Model_Anonymizer
      */
     protected function _fetchRandomCustomerData($count)
     {
+        $count = min($count, self::MAX_FAKESTER_REQUEST_COUNT);
         $url = "http://fakester.biz/json?n=$count";
         $json = file_get_contents($url);
         if ($json === false) {
