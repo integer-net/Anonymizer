@@ -6,8 +6,8 @@ Facts
 -----
 - version: 0.1.0
 - extension key: IntegerNet_Anonymizer
-- [extension on GitHub](https://github.com/avstudnitz/IntegerNet_Anonymizer)
-- [direct download link](https://github.com/avstudnitz/IntegerNet_Anonymizer/tarball/master)
+- [extension on GitHub](https://github.com/integer-net/Anonymizer)
+- [direct download link](https://github.com/integer-net/Anonymizer/tarball/master)
 
 Description
 -----------
@@ -47,7 +47,7 @@ Installation Instructions
 
 Support
 -------
-If you have any issues with this extension, open an issue on [GitHub](https://github.com/avstudnitz/IntegerNet_Anonymizer).
+If you have any issues with this extension, open an issue on [GitHub](https://github.com/integer-net/Anonymizer/issues).
 
 Contribution
 ------------
@@ -60,6 +60,8 @@ Andreas von Studnitz
 [http://www.integer-net.de](http://www.integer-net.de)
 
 [@avstudnitz](https://twitter.com/avstudnitz)
+
+[@integer_net](https://twitter.com/integer_net)
 
 Licence
 -------
