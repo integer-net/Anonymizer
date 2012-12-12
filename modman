@@ -1,0 +1,4 @@
+app/code/community/IntegerNet/Anonymizer/ app/code/community/IntegerNet/Anonymizer/
+app/design/adminhtml/default/default/template/anonymizer/ app/design/adminhtml/default/default/template/anonymizer/
+app/etc/modules/IntegerNet_Anonymizer.xml app/etc/modules/IntegerNet_Anonymizer.xml
+shell/anonymizer.php shell/anonymizer.php
