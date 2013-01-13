@@ -42,7 +42,7 @@ Installation Instructions
 -------------------------
 1. Download the extension from the link above and copy all the files into your document root (except this readme.txt).
 2. Clear the cache, logout from the admin panel and then login again.
-3. Call the extension from from System -> Tools -> Anonymizer.
+3. Call the extension from System -> Tools -> Anonymizer.
 4. Alternatively, call the extension via shell: php -f shell/anonymizer.php
 
 Support
