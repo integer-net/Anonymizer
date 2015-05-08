@@ -4,7 +4,9 @@ This module allows anonymizing customer data in a sensible way. It uses dummy da
 
 Facts
 -----
-- version: 2.0.0
+[![Build Status (development)](https://travis-ci.org/integer-net/Anonymizer.svg?branch=development)](https://travis-ci.org/integer-net/Anonymizer)
+
+- version: 2.0.0-rc1
 - extension key: integer-net/anonymizer
 - [extension on GitHub](https://github.com/integer-net/Anonymizer)
 - [direct download link](https://github.com/integer-net/Anonymizer/archive/master.zip)
