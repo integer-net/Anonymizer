@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <IntegerNet_Anonymizer>
+            <version>1.0.0</version>
+        </IntegerNet_Anonymizer>
+    </modules>
+    <global>
+        <models>
+            <integernet_anonymizer>
+                <class>IntegerNet_Anonymizer_Model</class>
+            </integernet_anonymizer>
+        </models>
+        <psr0_namespaces>
+            <IntegerNet />
+        </psr0_namespaces>
+    </global>
+    <phpunit>
+        <suite>
+            <modules>
+                <IntegerNet_Anonymizer />
+            </modules>
+        </suite>
+    </phpunit>
+</config>

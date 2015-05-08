@@ -1,0 +1,24 @@
+{
+    "name": "integer-net/anonymizer",
+    "license": "OSL-3.0",
+    "type": "magento-module",
+    "description": "Anonymizes all Customer Data",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*",
+        "fzaninotto/faker": ">=1.0",
+        "firegento/psr0autoloader": ">=0.1.0"
+    },
+    "require-dev": {
+        "ecomdev/ecomdev_phpunit": "~0.3.7"
+    },
+    "authors":[
+        {
+            "name":"Andreas von Studnitz"
+            "email":"avs@integer-net.de"
+        },
+        {
+            "name":"Fabian Schmengler",
+            "email":"fs@integer-net.de"
+        }
+    ]
+}

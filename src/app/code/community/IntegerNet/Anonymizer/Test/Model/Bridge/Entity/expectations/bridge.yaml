@@ -1,0 +1,130 @@
+customer_1:
+  identifier: '1'
+  values:
+    - formatter: safeEmail
+      value: test@test.de
+      unique: true
+    - formatter: firstName
+      value: Testname
+    - formatter: lastName
+      value: Testname
+    - formatter: firstName
+      value: J
+    - formatter: title
+      value: Kaiser
+    - formatter: suffix
+      value: III.
+    - formatter: randomNumber
+      value: DE 123456789
+customer_address_1:
+  identifier: '1'
+  values:
+    - formatter: firstName
+      value: Testname
+    - formatter: lastName
+      value: Testname
+    - formatter: firstName
+      value: J
+    - formatter: title
+      value: Kaiser
+    - formatter: suffix
+      value: III.
+    - formatter: company
+      value: Testfirma
+    - formatter: city
+      value: Testingen
+    - formatter: streetAddress
+      value: [ Teststraße 42 ]
+    - formatter: phoneNumber
+      value: 555-123-1
+    - formatter: phoneNumber
+      value: 555-123-2
+    - formatter: randomNumber
+      value: DE 123456789
+quote_address_1:
+  identifier: '2'
+  values:
+    - formatter: firstName
+      value: Somebody
+    - formatter: lastName
+      value: Else
+    - formatter: firstName
+      value:
+    - formatter: title
+      value:
+    - formatter: suffix
+      value:
+    - formatter: company
+      value: ACME GmbH
+    - formatter: city
+      value: Buxtehude
+    - formatter: streetAddress
+      value: [ Am Arm 1 ]
+    - formatter: phoneNumber
+      value: 555-12345
+    - formatter: phoneNumber
+      value: 555-12345
+    - formatter: randomNumber
+      value: DE 987654321
+order_address_1:
+  identifier: '2'
+  values:
+    - formatter: firstName
+      value: Testname
+    - formatter: lastName
+      value: Testname
+    - formatter: firstName
+      value: K
+    - formatter: title
+      value: Dr. phil.
+    - formatter: suffix
+      value:
+    - formatter: company
+      value: ACME GmbH
+    - formatter: city
+      value: Buxtehude
+    - formatter: streetAddress
+      value: [ Am Arm 1 ]
+    - formatter: phoneNumber
+      value: 555-12345
+    - formatter: phoneNumber
+      value: 555-12345
+    - formatter: randomNumber
+      value: DE 987654321
+newsletter_subscriber_1:
+  identifier: 'guest1@example.com'
+  values:
+    - formatter: safeEmail
+      value: guest1@example.com
+newsletter_subscriber_2:
+  identifier: 'guest2@example.com'
+  values:
+    - formatter: safeEmail
+      value: guest2@example.com
+newsletter_subscriber_3:
+  identifier: '1'
+  values:
+    - formatter: safeEmail
+      value: test@test.de
+giftregistry_1:
+  identifier: '_gift_registry_1'
+  values:
+    - formatter: sentence
+      value: My Gift Registry
+    - formatter: paragraph
+      value: My Private Message
+    - formatter: address
+      value: Something something somewhere
+    - formatter: 'null'
+      value: 'a:1:{s:3:"foo";s:3:"bar";}'
+giftregistry_person_1:
+  identifier: 'b.schenkter@example.com'
+  values:
+    - formatter: safeEmail
+      value: b.schenkter@example.com
+    - formatter: firstName
+      value: Bernd
+    - formatter: lastName
+      value: Schenkter
+    - formatter: 'null'
+      value: 'a:1:{s:3:"foo";s:3:"bar";}'
