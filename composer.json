@@ -11,6 +11,12 @@
     "require-dev": {
         "ecomdev/ecomdev_phpunit": "~0.3.7"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.firegento.com"
+		}
+	],
     "authors":[
         {
             "name":"Andreas von Studnitz",
