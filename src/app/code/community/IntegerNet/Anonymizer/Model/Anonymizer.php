@@ -22,15 +22,18 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     }
     protected function _getEntityModels()
     {
-        return array(
+        $models = array(
             'integernet_anonymizer/bridge_entity_customer',
             'integernet_anonymizer/bridge_entity_address_customerAddress',
             'integernet_anonymizer/bridge_entity_address_quoteAddress',
             'integernet_anonymizer/bridge_entity_address_orderAddress',
             'integernet_anonymizer/bridge_entity_newsletterSubscriber',
-            'integernet_anonymizer/bridge_entity_enterprise_giftregistry',
-            'integernet_anonymizer/bridge_entity_enterprise_giftregistryPerson',
         );
+        if (Mage::getEdition() == MAGE::EDITION_ENTERPRISE) {
+            $models[] = 'integernet_anonymizer/bridge_entity_enterprise_giftregistry';
+            $models[] = 'integernet_anonymizer/bridge_entity_enterprise_giftregistryPerson';
+        }
+        return $models;
     }
 
     public function setOutputStream($stream)
