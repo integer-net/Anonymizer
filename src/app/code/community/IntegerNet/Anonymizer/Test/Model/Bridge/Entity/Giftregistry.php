@@ -48,6 +48,7 @@ class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Giftregistry
     /**
      * @param $registryId
      * @test
+     * @depends isEnterprise
      * @dataProvider dataProvider
      * @dataProviderFile testGiftregistryBridge.yaml
      * @loadFixture customers.yaml
