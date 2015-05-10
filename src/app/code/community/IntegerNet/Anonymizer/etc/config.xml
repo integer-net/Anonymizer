@@ -11,6 +11,7 @@
                 <class>IntegerNet_Anonymizer_Model</class>
             </integernet_anonymizer>
         </models>
+        <composer_vendor_path><![CDATA[{{root_dir}}vendor]]></composer_vendor_path>
         <psr0_namespaces>
             <IntegerNet />
         </psr0_namespaces>
