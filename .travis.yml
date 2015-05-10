@@ -21,4 +21,4 @@ env:
 script:
   - composer install --no-dev
   - phpunit --bootstrap=test/bootstrap.php test
-  - curl -sSL https://raw.githubusercontent.com/AOEpeople/MageTestStand/master/setup.sh | bash
+  - curl -sSL https://raw.githubusercontent.com/schmengler/MageTestStand/master/setup.sh | bash
