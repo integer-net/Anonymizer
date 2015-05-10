@@ -7,7 +7,7 @@
  * @copyright  Copyright (c) 2015 integer_net GmbH (http://www.integer-net.de/)
  * @author     Fabian Schmengler <fs@integer-net.de>
  */
-class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Abstract extends EcomDev_PHPUnit_Test_Case
+abstract class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Abstract extends EcomDev_PHPUnit_Test_Case
 {
     /**
      * @param $bridge
