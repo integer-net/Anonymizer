@@ -20,14 +20,21 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
     }
     /**
      * @test
+     */
+    public function isEnterprise()
+    {
+        if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
+            $this->markTestSkipped('Skipping test for Magento Enterprise');
+        }
+    }
+    /**
+     * @test
+     * @depends isEnterprise
      * @loadFixture customers.yaml
      * @loadFixture enterprise.yaml
      */
     public function testAnonymizeAllEnterprise()
     {
-        if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
-            $this->markTestSkipped('Skipping test for Magento Enterprise');
-        }
         $this->_testAnonymizeAll();
     }
 
