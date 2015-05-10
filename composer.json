@@ -9,7 +9,7 @@
         "firegento/psr0autoloader": ">=0.1.0"
     },
     "require-dev": {
-        "ecomdev/ecomdev_phpunit": "~0.3.7"
+         "ecomdev/ecomdev_phpunit": "~0.3.7"
     },
     "repositories": [
         {
