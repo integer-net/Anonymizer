@@ -14,7 +14,10 @@
 class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_GiftregistryPerson
     extends IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Abstract
 {
-    protected function setUp()
+    /**
+     * @test
+     */
+    public function isEnterprise()
     {
         if (Mage::getEdition() !== Mage::EDITION_ENTERPRISE) {
             $this->markTestSkipped('Skipping test for Magento Enterprise');
@@ -24,6 +27,7 @@ class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_GiftregistryPerson
     /**
      * @param $personId
      * @test
+     * @depends isEnterprise
      * @dataProvider dataProvider
      * @dataProviderFile testGiftregistryPersonBridge.yaml
      * @loadExpectation bridge.yaml
