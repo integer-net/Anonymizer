@@ -24,10 +24,10 @@ class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_NewsletterSubscriber
      */
     public function testGetValues($subscriberId)
     {
-        /** @var Mage_Newsletter_Model_Subscriber $subscriber */
-        $subscriber = Mage::getModel('newsletter/subscriber')->load($subscriberId);
         /** @var IntegerNet_Anonymizer_Model_Bridge_Entity_NewsletterSubscriber $bridge */
         $bridge = Mage::getModel('integernet_anonymizer/bridge_entity_newsletterSubscriber');
+        /** @var Mage_Newsletter_Model_Subscriber $subscriber */
+        $subscriber = $this->_loadEntityByCollection('subscriber_id', $subscriberId, $bridge);
         $expected = $this->expected('newsletter_subscriber_%d', $subscriberId);
 
         $this->_testGetValues($bridge, $subscriber, $expected);

@@ -13,7 +13,7 @@ customer_1:
     - formatter: title
       value: Kaiser
     - formatter: suffix
-      value: III.
+      value: "der Große"
     - formatter: randomNumber
       value: DE 123456789
 customer_address_1:
@@ -89,6 +89,23 @@ order_address_1:
       value: 555-12345
     - formatter: phoneNumber
       value: 555-12345
+    - formatter: randomNumber
+      value: DE 987654321
+order_1:
+  identifier: '2'
+  values:
+    - formatter: safeEmail
+      value: test2@test.de
+    - formatter: firstName
+      value: Testname
+    - formatter: lastName
+      value: Testname
+    - formatter: firstName
+      value: J
+    - formatter: title
+      value: Kaiser
+    - formatter: suffix
+      value: III
     - formatter: randomNumber
       value: DE 987654321
 newsletter_subscriber_1:

@@ -22,8 +22,21 @@ class IntegerNet_Anonymizer_Shell extends AutoloaderInitializer
         /** @var IntegerNet_Anonymizer_Model_Anonymizer $anonymizer */
         $anonymizer = Mage::getModel('integernet_anonymizer/anonymizer');
         $anonymizer->setOutputStream(STDOUT);
+        $anonymizer->setShowProgress((bool) $this->getArg('progress'));
+        $anonymizer->setProgressSteps((int) $this->getArg('progress'));
         $anonymizer->anonymizeAll();
     }
+
+    public function usageHelp()
+    {
+        return <<<USAGE
+Usage:  php -f anonymizer.php -- [options]
+
+  --progress [steps]    Show progress in real time (steps defines after how many updated entities status should be refreshed)
+  -h | --help           This help
+USAGE;
+    }
+
 }
 
 $shell = new IntegerNet_Anonymizer_Shell();

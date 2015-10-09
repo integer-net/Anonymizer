@@ -28,6 +28,8 @@ class IntegerNet_Anonymizer_Model_Anonymizer
             'integernet_anonymizer/bridge_entity_address_quoteAddress',
             'integernet_anonymizer/bridge_entity_address_orderAddress',
             'integernet_anonymizer/bridge_entity_newsletterSubscriber',
+            // Models with grid table must come last!
+            'integernet_anonymizer/bridge_entity_order',
         );
         if (Mage::getEdition() == MAGE::EDITION_ENTERPRISE) {
             $models[] = 'integernet_anonymizer/bridge_entity_enterprise_giftregistry';
@@ -35,10 +37,26 @@ class IntegerNet_Anonymizer_Model_Anonymizer
         }
         return $models;
     }
-
+    /**
+     * @param resource $stream stream resource used for output (for example opened file pointer or STDOUT)
+     */
     public function setOutputStream($stream)
     {
         $this->_updater->setOutputStream($stream);
+    }
+    /**
+     * @param boolean $showProgress True if progress should be output (default is true)
+     */
+    public function setShowProgress($showProgress)
+    {
+        $this->_updater->setShowProgress($showProgress);
+    }
+    /**
+     * @param $steps How often progress output should be refreshed (default is 1 = after every entity update; example: 10 = every 10 entity updates)
+     */
+    public function setProgressSteps($steps)
+    {
+        $this->_updater->setProgressSteps($steps);
     }
 
     public function anonymizeAll()

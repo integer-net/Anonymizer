@@ -112,6 +112,27 @@ tables:
   sales/order:
     - entity_id: 1
       quote_id: 1
+      billing_address_id: 1
+      customer_id: 2
+      customer_email: test2@test.de
+      customer_firstname: Testname
+      customer_lastname: Testname
+      customer_middlename: J
+      customer_prefix: Kaiser
+      customer_suffix: III
+      customer_taxvat: DE 987654321
+    - entity_id: 2
+      quote_id: 2
+      billing_address_id: 2
+      customer_email: guest@guest.de
+      customer_firstname: Gast
+      customer_lastname: Gast
+  sales/order_grid:
+    - entity_id: 1
+      customer_id: 2
+      shipping_name: Testname Testname
+      billing_name: Testname Testname
+  #TODO invoice, creditmemo
   sales/quote_address:
     - address_id: 1
       address_type: billing
@@ -188,6 +209,25 @@ tables:
       telephone: 555-12345
       fax: 555-12345
       vat_id: DE 987654321
+      country_id: DE
+      region_id: 88
+    - entity_id: 2
+      address_type: billing
+      parent_id: 2
+      customer_id: null
+      customer_address_id: null
+      firstname: Gast
+      lastname: Gast
+      middlename:
+      prefix:
+      suffix:
+      company: Gastro
+      postcode: 111222
+      city: Gastdorf
+      street: Gaststraße 1
+      telephone:
+      fax:
+      vat_id:
       country_id: DE
       region_id: 88
   sales/quote_item: []

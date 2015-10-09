@@ -51,4 +51,17 @@ abstract class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Abstract extends E
             );
         }
     }
+
+    /**
+     * @param $id
+     * @param $bridge
+     * @return mixed
+     */
+    protected function _loadEntityByCollection($idField, $id, $bridge)
+    {
+        $entity = $bridge->getCollectionIterator()->getCollection()
+            ->addFieldToFilter($idField, $id)
+            ->getFirstItem();
+        return $entity;
+    }
 }

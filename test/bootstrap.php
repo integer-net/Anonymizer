@@ -11,5 +11,3 @@ spl_autoload_register(function($className)
     return false;
 }
 );
-
-require_once 'vendor/autoload.php';

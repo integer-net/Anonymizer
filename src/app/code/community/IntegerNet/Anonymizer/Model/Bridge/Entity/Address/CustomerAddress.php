@@ -10,6 +10,10 @@
 class IntegerNet_Anonymizer_Model_Bridge_Entity_Address_CustomerAddress
     extends IntegerNet_Anonymizer_Model_Bridge_Entity_Address_Abstract
 {
+    protected $_attributesUsedForIdentifier = array(
+        'parent_id'
+    );
+
     protected $_entityType = 'customer_address';
 
     function __construct()

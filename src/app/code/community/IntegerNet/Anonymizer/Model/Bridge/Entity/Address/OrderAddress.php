@@ -10,6 +10,10 @@
 class IntegerNet_Anonymizer_Model_Bridge_Entity_Address_OrderAddress
     extends IntegerNet_Anonymizer_Model_Bridge_Entity_Address_Abstract
 {
+    protected $_attributesUsedForIdentifier = array(
+        'customer_id'
+    );
+
     function __construct()
     {
         $this->_entity = Mage::getModel('sales/order_address');

@@ -24,10 +24,10 @@ class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_QuoteAddress
      */
     public function testGetValues($quoteAddressId)
     {
-        /** @var Mage_Sales_Model_Quote_Address $quoteAddress */
-        $quoteAddress = Mage::getModel('sales/quote_address')->load($quoteAddressId);
         /** @var IntegerNet_Anonymizer_Model_Bridge_Entity_Address_QuoteAddress $bridge */
         $bridge = Mage::getModel('integernet_anonymizer/bridge_entity_address_quoteAddress');
+        /** @var Mage_Sales_Model_Quote_Address $quoteAddress */
+        $quoteAddress = $this->_loadEntityByCollection('address_id', $quoteAddressId, $bridge);
         $expected = $this->expected('quote_address_%d', $quoteAddressId);
 
         $this->_testGetValues($bridge, $quoteAddress, $expected);

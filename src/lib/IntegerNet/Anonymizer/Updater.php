@@ -25,6 +25,15 @@ class Updater
      */
     private $outputStream = null;
     /**
+     * @var bool
+     */
+    private $showProgress = true;
+    /**
+     * @var int
+     */
+    private $progressSteps = 1;
+
+    /**
      * @var AnonymizableEntity
      */
     private $entityModel;
@@ -39,6 +48,22 @@ class Updater
     public function setOutputStream($stream)
     {
         $this->outputStream = $stream;
+    }
+
+    /**
+     * @param boolean $showProgress
+     */
+    public function setShowProgress($showProgress)
+    {
+        $this->showProgress = $showProgress;
+    }
+
+    /**
+     * @param int $progressSteps
+     */
+    public function setProgressSteps($progressSteps)
+    {
+        $this->progressSteps = $progressSteps;
     }
 
     public function update(CollectionIterator $iterator, AnonymizableEntity $entityModel)
@@ -75,7 +100,9 @@ class Updater
      */
     private function outputIteratorStatus(CollectionIterator $iterator)
     {
-        if (is_resource($this->outputStream) && get_resource_type($this->outputStream) === 'stream') {
+        if ($this->showProgress && (($iterator->getIteration() + 1) % $this->progressSteps === 0)
+            && is_resource($this->outputStream) && get_resource_type($this->outputStream) === 'stream'
+        ) {
             fwrite($this->outputStream, sprintf("\rUpdating %s: %s/%s - Memory usage %s Bytes",
                 $this->entityModel->getEntityName(),
                 str_pad($iterator->getIteration() + 1, strlen($iterator->getSize()), ' '), $iterator->getSize(),

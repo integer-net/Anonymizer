@@ -10,7 +10,7 @@
 class IntegerNet_Anonymizer_Model_Bridge_Iterator implements \IntegerNet\Anonymizer\Implementor\CollectionIterator
 {
     /**
-     * @var Mage_Core_Model_Resource_Db_Collection_Abstract
+     * @var Mage_Eav_Model_Entity_Collection_Abstract|Mage_Core_Model_Resource_Db_Collection_Abstract
      */
     protected $_collection;
     /**
@@ -35,6 +35,15 @@ class IntegerNet_Anonymizer_Model_Bridge_Iterator implements \IntegerNet\Anonymi
         $this->_collection = $collection;
         $this->_iterator = Mage::getResourceModel('core/iterator');
     }
+
+    /**
+     * @return Mage_Core_Model_Resource_Db_Collection_Abstract|Mage_Eav_Model_Entity_Collection_Abstract
+     */
+    public function getCollection()
+    {
+        return $this->_collection;
+    }
+
     /**
      * @param callable $callable
      * @return mixed
@@ -49,6 +58,7 @@ class IntegerNet_Anonymizer_Model_Bridge_Iterator implements \IntegerNet\Anonymi
                 $callable($self);
             }
         ));
+        $this->_afterWalk();
     }
 
     public function _setRawData($data)
@@ -92,6 +102,20 @@ class IntegerNet_Anonymizer_Model_Bridge_Iterator implements \IntegerNet\Anonymi
     function getSize()
     {
         return $this->_collection->getSize();
+    }
+
+    /**
+     * Additional processing at the end:
+     *  - update grid tables
+     *
+     * @return void
+     */
+    protected function _afterWalk()
+    {
+        $entityResource = $this->_collection->getResource();
+        if ($entityResource instanceof Mage_Sales_Model_Resource_Order_Abstract) {
+            $entityResource->updateGridRecords($this->_collection->getAllIds());
+        }
     }
 
 }

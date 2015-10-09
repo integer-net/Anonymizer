@@ -24,10 +24,10 @@ class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_OrderAddress
      */
     public function testGetValues($orderAddressId)
     {
-        /** @var Mage_Sales_Model_Quote_Address $orderAddress */
-        $orderAddress = Mage::getModel('sales/order_address')->load($orderAddressId);
         /** @var IntegerNet_Anonymizer_Model_Bridge_Entity_Address_QuoteAddress $bridge */
         $bridge = Mage::getModel('integernet_anonymizer/bridge_entity_address_orderAddress');
+        /** @var Mage_Sales_Model_Quote_Address $orderAddress */
+        $orderAddress = $this->_loadEntityByCollection('entity_id', $orderAddressId, $bridge);
         $expected = $this->expected('order_address_%d', $orderAddressId);
 
         $this->_testGetValues($bridge, $orderAddress, $expected);

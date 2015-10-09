@@ -11,6 +11,9 @@ class IntegerNet_Anonymizer_Model_Bridge_Entity_NewsletterSubscriber
     extends IntegerNet_Anonymizer_Model_Bridge_Entity_Abstract
 {
 
+    protected $_attributesUsedForIdentifier = array(
+        'customer_id'
+    );
     protected $_formattersByAttribute = array(
         'subscriber_email' => 'safeEmail',
     );

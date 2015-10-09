@@ -18,6 +18,7 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
     {
         $this->_testAnonymizeAll();
     }
+
     /**
      * @test
      */
@@ -36,6 +37,8 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
     public function testAnonymizeAllEnterprise()
     {
         $this->_testAnonymizeAll();
+        //TODO EE assertions
+        $this->markTestIncomplete();
     }
 
     /**
@@ -43,11 +46,22 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
      */
     protected function _testAnonymizeAll()
     {
+        // TEST PRE CONDITIONS
+
+        /** @var Mage_Sales_Model_Resource_Order_Grid_Collection $orderGridCollection */
+        $orderGridCollection = Mage::getResourceModel('sales/order_grid_collection');
+        $orderGridData = $orderGridCollection->addFieldToFilter('entity_id', 1)->getFirstItem();
+        $this->assertEquals('Testname Testname', $orderGridData->getShippingName());
+        $this->assertEquals('Testname Testname', $orderGridData->getBillingName());
+
+        // RUN ANONYMIZER
+
         /** @var IntegerNet_Anonymizer_Model_Anonymizer $anonymizer */
         $anonymizer = Mage::getModel('integernet_anonymizer/anonymizer');
         $anonymizer->anonymizeAll();
 
-        // sample test
+        // TEST POST CONDITIONS
+
         $customer = Mage::getModel('customer/customer')->load(2);
         $this->assertNotEquals('test2@test.de', $customer->getData('email'));
         $this->assertNotEquals('Testname', $customer->getData('firstname'));
@@ -67,7 +81,6 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
 
         $quote = Mage::getModel('sales/quote')->load(1);
         $quoteAddress = $quote->getBillingAddress();
-        /*
         $this->assertEquals($customerAddress->getCustomerId(), $quoteAddress->getCustomerId(),
             'Quote address and customer address refer to the same customer');
         $this->assertNotEquals($customerAddress->getData('lastname'), $quoteAddress->getData('lastname'),
@@ -76,8 +89,6 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
             'Different values stay different');
         $this->assertEquals($customerAddress->getData('company'), $quoteAddress->getData('company'),
             'Same values stay the same');
-        */
-        //TODO make it work or remove the lines above
 
         $this->assertNotEquals('Somebody', $quoteAddress->getData('firstname'));
         $this->assertNotEquals('Else', $quoteAddress->getData('lastname'));
@@ -90,9 +101,16 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
         $this->assertEquals('67890', $quoteAddress->getData('postcode'));
         $this->assertEquals('DE', $quoteAddress->getCountryId());
 
+        /** @var Mage_Sales_Model_Order $order */
         $order = Mage::getModel('sales/order')->load(1);
+        $this->assertNotEquals('test2@test.de', $order->getCustomerEmail());
+        $this->assertNotEquals('Testname', $order->getCustomerFirstname());
+        $this->assertNotEquals('J', $order->getCustomerMiddlename());
+        $this->assertNotEquals('Testname', $order->getCustomerLastname());
+        $this->assertNotEquals('Kaiser', $order->getCustomerPrefix());
+        $this->assertNotEquals('der Große', $order->getCustomerSuffix());
+
         $orderAddress = $order->getBillingAddress();
-        /*
         $this->assertEquals($quoteAddress->getCustomerId(), $orderAddress->getCustomerId(),
             'Quote address and customer address refer to the same customer');
         $this->assertNotEquals($quoteAddress->getData('lastname'), $orderAddress->getData('lastname'),
@@ -101,8 +119,6 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
             'Different values stay different');
         $this->assertEquals($quoteAddress->getData('company'), $orderAddress->getData('company'),
             'Same values stay the same');
-        */
-        //TODO make it work or remove the lines above
 
         $this->assertNotEquals('Testname', $orderAddress->getData('firstname'));
         $this->assertNotEquals('Testname', $orderAddress->getData('lastname'));
@@ -114,6 +130,13 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
         $this->assertNotEquals('DE 987654321', $orderAddress->getData('vat_id'));
         $this->assertEquals('67890', $orderAddress->getData('postcode'));
         $this->assertEquals('DE', $orderAddress->getCountryId());
+
+        /** @var Mage_Sales_Model_Resource_Order_Grid_Collection $orderGridCollection */
+        $orderGridCollection = Mage::getResourceModel('sales/order_grid_collection');
+        $orderGridData = $orderGridCollection->addFieldToFilter('entity_id', 1)->getFirstItem();
+        $this->assertNotEquals('Testname Testname', $orderGridData->getShippingName());
+        $this->assertNotEquals('Testname Testname', $orderGridData->getBillingName());
+        $this->assertEquals($orderAddress->getName(), $orderGridData->getBillingName());
 
         $subscriber = Mage::getModel('newsletter/subscriber')->load(1);
         $this->assertNotEquals('guest1@example.com', $subscriber->getSubscriberEmail());
@@ -133,7 +156,5 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
         $this->assertNotEquals($guestQuoteAddress->getData('fax'), $otherGuestQuoteAddress->getData('fax'));
         $this->assertNotEquals($guestQuoteAddress->getData('vat_id'), $otherGuestQuoteAddress->getData('vat_id'));
 
-        //TODO EE assertions
-        $this->markTestIncomplete();
     }
 }

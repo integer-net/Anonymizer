@@ -32,6 +32,10 @@ abstract class IntegerNet_Anonymizer_Model_Bridge_Entity_Abstract
     /**
      * @var string[]
      */
+    protected $_attributesUsedForIdentifier = array();
+    /**
+     * @var string[]
+     */
     protected $_uniqueAttributes = array();
     /**
      * @var AnonymizableValue[]
@@ -150,10 +154,9 @@ abstract class IntegerNet_Anonymizer_Model_Bridge_Entity_Abstract
         /** @var Varien_Data_Collection_Db $collection */
         $collection = $this->_entity->getCollection();
         //TODO add columns used by identifier to select
-        $fields = array_keys($this->_formattersByAttribute);
+        $fields = array_unique(array_merge(array_keys($this->_formattersByAttribute), $this->_attributesUsedForIdentifier));
         if ($collection instanceof Mage_Eav_Model_Entity_Collection_Abstract) {
-            //no, this only works when models are fully loaded via collection load
-            //$collection->addAttributeToSelect($fields);
+            $collection->addAttributeToSelect($fields, 'left');
         } elseif ($collection instanceof Mage_Core_Model_Resource_Db_Collection_Abstract) {
             $collection->addFieldToSelect($fields);
         }

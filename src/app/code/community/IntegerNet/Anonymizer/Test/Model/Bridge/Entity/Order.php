@@ -11,26 +11,26 @@
 /**
  * @group IntegerNet_Anonymizer
  */
-class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Customer
+class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Order
     extends IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Abstract
 {
     /**
-     * @param $customerId
+     * @param $orderId
      * @test
      * @dataProvider dataProvider
-     * @dataProviderFile testCustomerBridge.yaml
+     * @dataProviderFile testOrderBridge.yaml
      * @loadExpectation bridge.yaml
      * @loadFixture customers.yaml
      */
-    public function testGetValues($customerId)
+    public function testGetValues($orderId)
     {
-        /** @var IntegerNet_Anonymizer_Model_Bridge_Entity_Customer $bridge */
-        $bridge = Mage::getModel('integernet_anonymizer/bridge_entity_customer');
-        /** @var Mage_Customer_Model_Customer $customer */
-        $customer = $this->_loadEntityByCollection('entity_id', $customerId, $bridge);
-        $expected = $this->expected('customer_%d', $customerId);
+        /** @var IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Order $bridge */
+        $bridge = Mage::getModel('integernet_anonymizer/bridge_entity_order');
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $this->_loadEntityByCollection('entity_id', $orderId, $bridge);
+        $expected = $this->expected('order_%d', $orderId);
 
-        $this->_testGetValues($bridge, $customer, $expected);
+        $this->_testGetValues($bridge, $order, $expected);
     }
 
     /**

@@ -36,10 +36,10 @@ class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_GiftregistryPerson
      */
     public function testGetValues($personId)
     {
-        /** @var Enterprise_GiftRegistry_Model_Person $person */
-        $person = Mage::getModel('enterprise_giftregistry/person')->load($personId);
         /** @var IntegerNet_Anonymizer_Model_Bridge_Entity_Enterprise_GiftregistryPerson $bridge */
         $bridge = Mage::getModel('integernet_anonymizer/bridge_entity_enterprise_giftregistryPerson');
+        /** @var Enterprise_GiftRegistry_Model_Person $person */
+        $person = $this->_loadEntityByCollection('person_id', $personId, $bridge);
         $expected = $this->expected('giftregistry_person_%d', $personId);
 
         $this->_testGetValues($bridge, $person, $expected);
