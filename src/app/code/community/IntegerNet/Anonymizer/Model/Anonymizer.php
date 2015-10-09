@@ -43,12 +43,21 @@ class IntegerNet_Anonymizer_Model_Anonymizer
 
     public function anonymizeAll()
     {
-        foreach ($this->_getEntityModels() as $entityModelAlias) {
-            /** @var IntegerNet_Anonymizer_Model_Bridge_Entity_Abstract $entityModel */
-            $entityModel = Mage::getModel($entityModelAlias);
-            while ($collectionIterator = $entityModel->getCollectionIterator()) {
-                $this->_updater->update($collectionIterator, $entityModel);
+        /** @var Varien_Db_Adapter_Interface $connection */
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $connection->beginTransaction();
+        try {
+            foreach ($this->_getEntityModels() as $entityModelAlias) {
+                /** @var IntegerNet_Anonymizer_Model_Bridge_Entity_Abstract $entityModel */
+                $entityModel = Mage::getModel($entityModelAlias);
+                while ($collectionIterator = $entityModel->getCollectionIterator()) {
+                    $this->_updater->update($collectionIterator, $entityModel);
+                }
             }
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollBack();
+            throw $e;
         }
     }
     public function anonymizeStore()
