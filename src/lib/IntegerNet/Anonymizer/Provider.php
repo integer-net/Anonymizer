@@ -67,7 +67,7 @@ class Provider
         if ($unique) {
             $faker = $faker->unique();
         }
-        $this->seedRng($identifier);
+        $this->seedRng($formatter.$identifier);
         $result = $faker->format($formatter);
         $this->resetRng();
         return $result;
