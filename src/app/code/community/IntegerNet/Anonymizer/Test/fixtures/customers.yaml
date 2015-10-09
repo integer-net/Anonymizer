@@ -8,7 +8,7 @@ eav:
       lastname: Testname
       middlename: J
       prefix: Kaiser
-      suffix: III.
+      suffix: "der Große"
       taxvat: DE 123456789
       group_id: 1
       store_id: 1
