@@ -10,7 +10,7 @@ Facts
 | master | [![Build Status (master)](https://travis-ci.org/integer-net/Anonymizer.svg?branch=master)](https://travis-ci.org/integer-net/Anonymizer) | [![Scrutinizer Code Quality (master](https://scrutinizer-ci.com/g/integer-net/Anonymizer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/integer-net/Anonymizer/?branch=master) |
 | development | [![Build Status (development)](https://travis-ci.org/integer-net/Anonymizer.svg?branch=development)](https://travis-ci.org/integer-net/Anonymizer) | [![Scrutinizer Code Quality (development](https://scrutinizer-ci.com/g/integer-net/Anonymizer/badges/quality-score.png?b=development)](https://scrutinizer-ci.com/g/integer-net/Anonymizer/?branch=development) |
 
-- version: 2.0.0-rc2
+- version: 2.0.0
 - extension key: integer-net/anonymizer
 - [extension on GitHub](https://github.com/integer-net/Anonymizer)
 - [direct download link](https://github.com/integer-net/Anonymizer/archive/master.zip)
