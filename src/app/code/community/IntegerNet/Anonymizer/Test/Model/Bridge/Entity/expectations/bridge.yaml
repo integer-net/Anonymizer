@@ -133,7 +133,8 @@ giftregistry_1:
     - formatter: address
       value: Something something somewhere
     - formatter: 'null'
-      value: 'a:1:{s:3:"foo";s:3:"bar";}'
+      value:
+        foo: 'bar'
 giftregistry_person_1:
   identifier: 'b.schenkter@example.com'
   values:

@@ -53,6 +53,7 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
         $orderGridData = $orderGridCollection->addFieldToFilter('entity_id', 1)->getFirstItem();
         $this->assertEquals('Testname Testname', $orderGridData->getShippingName());
         $this->assertEquals('Testname Testname', $orderGridData->getBillingName());
+        $this->assertEquals('1000000001', $orderGridData->getIncrementId(), 'Precondition: Increment ID in grid');
 
         // RUN ANONYMIZER
 
@@ -103,6 +104,7 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
 
         /** @var Mage_Sales_Model_Order $order */
         $order = Mage::getModel('sales/order')->load(1);
+        $this->assertEquals('1000000001', $order->getIncrementId(), 'Increment ID should be unchanged');
         $this->assertNotEquals('test2@test.de', $order->getCustomerEmail());
         $this->assertNotEquals('Testname', $order->getCustomerFirstname());
         $this->assertNotEquals('J', $order->getCustomerMiddlename());
@@ -137,6 +139,7 @@ class IntegerNet_Anonymizer_Test_Model_Anonymizer extends EcomDev_PHPUnit_Test_C
         $this->assertNotEquals('Testname Testname', $orderGridData->getShippingName());
         $this->assertNotEquals('Testname Testname', $orderGridData->getBillingName());
         $this->assertEquals($orderAddress->getName(), $orderGridData->getBillingName());
+        $this->assertEquals('1000000001', $orderGridData->getIncrementId(), 'Increment ID in grid should be unchanged');
 
         $subscriber = Mage::getModel('newsletter/subscriber')->load(1);
         $this->assertNotEquals('guest1@example.com', $subscriber->getSubscriberEmail());

@@ -34,31 +34,35 @@ class IntegerNet_Anonymizer_Test_Model_Bridge_Entity_Order
     }
 
     /**
+     * @param $orderId
      * @param $customerId
      * @test
      * @dataProvider dataProvider
-     * @dataProviderFile testCustomerBridge.yaml
+     * @dataProviderFile testOrderBridge.yaml
      * @loadFixture customers.yaml
      */
-    public function testUpdateValues($customerId)
+    public function testUpdateValues($orderId, $customerId)
     {
         static $changedEmail = 'changed@example.com',
                $changedMiddlename = 'trouble';
 
-        /** @var IntegerNet_Anonymizer_Model_Bridge_Entity_Customer $bridge */
-        $bridge = Mage::getModel('integernet_anonymizer/bridge_entity_customer');
+        /** @var IntegerNet_Anonymizer_Model_Bridge_Entity_Order $bridge */
+        $bridge = Mage::getModel('integernet_anonymizer/bridge_entity_order');
 
         $bridge->setRawData(array(
-            'entity_id' => $customerId,
-            'email'     => $changedEmail,
-            'middlename' => $changedMiddlename
+            'entity_id' => $orderId,
+            'increment_id' => '1000000001',
+            'customer_id' => $customerId,
+            'customer_email'     => $changedEmail,
+            'customer_middlename' => $changedMiddlename
             ));
 
         $this->_updateValues($bridge);
 
-        $customer = Mage::getModel('customer/customer')->load($customerId);
-        $this->assertEquals($changedMiddlename, $customer->getMiddlename());
-        $this->assertEquals($changedEmail, $customer->getEmail());
+        $order = Mage::getModel('sales/order')->load($orderId);
+        $this->assertEquals($changedMiddlename, $order->getCustomerMiddlename());
+        $this->assertEquals($changedEmail, $order->getCustomerEmail());
+        $this->assertNotEmpty($order->getIncrementId(), 'Increment ID should not be empty');
     }
 
 }

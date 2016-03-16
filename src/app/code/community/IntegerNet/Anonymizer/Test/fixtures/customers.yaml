@@ -111,6 +111,7 @@ tables:
       customer_id: null
   sales/order:
     - entity_id: 1
+      increment_id: 1000000001
       quote_id: 1
       billing_address_id: 1
       customer_id: 2
@@ -122,6 +123,7 @@ tables:
       customer_suffix: III
       customer_taxvat: DE 987654321
     - entity_id: 2
+      increment_id: 1000000002
       quote_id: 2
       billing_address_id: 2
       customer_email: guest@guest.de
@@ -129,6 +131,7 @@ tables:
       customer_lastname: Gast
   sales/order_grid:
     - entity_id: 1
+      increment_id: 1000000001
       customer_id: 2
       shipping_name: Testname Testname
       billing_name: Testname Testname

@@ -12,7 +12,7 @@ class IntegerNet_Anonymizer_Model_Bridge_Entity_Order extends IntegerNet_Anonymi
     protected $_entityType = 'order';
 
     protected $_attributesUsedForIdentifier = array(
-        'customer_id'
+        'customer_id', 'increment_id'
     );
 
     protected $_formattersByAttribute = array(
