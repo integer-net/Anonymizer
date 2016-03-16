@@ -1,15 +1,36 @@
 {
-    "name":"integer-net/anonymizer",
-    "type":"magento-module",
-    "license":"OSL-3.0",
-    "homepage":"https://github.com/integer-net/Anonymizer",
-    "description":"Anonymizes all Customer Data",
+    "name": "integer-net/anonymizer",
+    "license": "OSL-3.0",
+    "type": "magento-module",
+    "description": "Anonymizes all Customer Data",
+    "require": {
+        "fzaninotto/faker": ">=1.0",
+        "firegento/psr0autoloader": ">=0.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "IntegerNet\\Anonymizer\\": "src/lib/IntegerNet/Anonymizer"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IntegerNet\\Anonymizer\\": "test/IntegerNet/Anonymizer"
+        }
+    },
+    "require-dev": {
+        "ecomdev/ecomdev_phpunit": "~0.3.7",
+        "aoepeople/composer-installers": "*"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.firegento.com"
+		}
+	],
     "authors":[
         {
-            "name":"Andreas von Studnitz"
+            "name":"Fabian Schmengler",
+            "email":"fs@integer-net.de"
         }
-    ],
-    "require":{
-        "magento-hackathon/magento-composer-installer":"*"
-    }
+    ]
 }

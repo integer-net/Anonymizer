@@ -1,0 +1,16 @@
+tables:
+  enterprise_giftregistry/entity:
+    - entity_id: 1
+      type_id: 1
+      customer_id: 2
+      title: My Gift Registry
+      message: My Private Message
+      shipping_address: Something something somewhere
+      custom_values: 'a:1:{s:3:"foo";s:3:"bar";}'
+  enterprise_giftregistry/person:
+    - person_id: 1
+      entity_id: 1
+      firstname: Bernd
+      lastname: Schenkter
+      email: b.schenkter@example.com
+      custom_values: 'a:1:{s:3:"foo";s:3:"bar";}'

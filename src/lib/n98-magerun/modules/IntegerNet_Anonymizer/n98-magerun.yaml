@@ -1,0 +1,6 @@
+autoloaders:
+  IntegerNet\Anonymizer\AnonymizeCommand: %module%/src
+
+commands:
+  customCommands:
+    - IntegerNet\Anonymizer\AnonymizeCommand

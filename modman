@@ -1,4 +1,6 @@
-app/code/community/IntegerNet/Anonymizer/ app/code/community/IntegerNet/Anonymizer/
-app/design/adminhtml/default/default/template/anonymizer/ app/design/adminhtml/default/default/template/anonymizer/
-app/etc/modules/IntegerNet_Anonymizer.xml app/etc/modules/IntegerNet_Anonymizer.xml
-shell/anonymizer.php shell/anonymizer.php
+src/app/code/community/IntegerNet/Anonymizer     app/code/community/IntegerNet/Anonymizer
+src/app/etc/modules/*    app/etc/modules/
+src/lib/IntegerNet/*    lib/IntegerNet/
+src/lib/n98-magerun/modules/IntegerNet_Anonymizer lib/n98-magerun/modules/IntegerNet_Anonymizer
+
+@shell cp -fu $MODULE/src/shell/* $PROJECT/shell/

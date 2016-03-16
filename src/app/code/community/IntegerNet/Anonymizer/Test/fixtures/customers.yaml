@@ -1,0 +1,247 @@
+eav:
+  customer:
+    - entity_id: 1
+      website_id: 1
+      increment_id: 1000000001
+      email: test@test.de
+      firstname: Testname
+      lastname: Testname
+      middlename: J
+      prefix: Kaiser
+      suffix: "der Große"
+      taxvat: DE 123456789
+      group_id: 1
+      store_id: 1
+      is_active: 1
+      attribute_set_id: 0
+      default_billing: 1
+      default_shipping: 2
+    - entity_id: 2
+      website_id: 1
+      increment_id: 1000000002
+      email: test2@test.de
+      firstname: Testname
+      lastname: Testname
+      middlename: K
+      prefix: Dr. phil.
+      suffix:
+      group_id: 1
+      store_id: 1
+      is_active: 1
+      attribute_set_id: 0
+      default_billing: 4
+      default_shipping: 4
+    - entity_id: 3
+      website_id: 1
+      increment_id: 1000000003
+      email: test3@test.de
+      firstname: Test
+      lastname: Test
+      group_id: 1
+      store_id: 1
+      is_active: 1
+      attribute_set_id: 0
+  customer_address:
+    - entity_id: 1
+      parent_id: 1
+      attribute_set_id: 0
+      is_default_billing: 1
+      firstname: Testname
+      lastname: Testname
+      middlename: J
+      prefix: Kaiser
+      suffix: III.
+      company: Testfirma
+      postcode: 12345
+      city: Testingen
+      street: Teststraße 42
+      telephone: 555-123-1
+      fax: 555-123-2
+      vat_id: DE 123456789
+      country_id: DE
+      region_id: 88
+    - entity_id: 2
+      parent_id: 1
+      attribute_set_id: 0
+      is_default_shipping: 1
+      firstname: Testname
+      lastname: Testname
+      middlename: J
+      prefix: Kaiser
+      suffix: III.
+      company: Testfirma
+      postcode: 12345
+      city: Anderswo
+      street: Testweg 3
+      telephone: (0)555-123-11
+      fax: (0)555-123-12
+      vat_id: DE 123456789
+      country_id: DE
+      region_id: 88
+    - entity_id: 3
+      parent_id: 1
+      attribute_set_id: 0
+    - entity_id: 4
+      parent_id: 2
+      attribute_set_id: 0
+      is_default_billing: 1
+      is_default_shipping: 1
+      firstname: Testname
+      lastname: Testname
+      middlename: K
+      prefix: Dr. phil.
+      suffix:
+      company: ACME GmbH
+      postcode: 67890
+      city: Buxtehude
+      street: Am Arm 1
+      telephone: 555-12345
+      fax: 555-12345
+      vat_id: DE 987654321
+      country_id: DE
+      region_id: 88
+
+tables:
+  sales/quote:
+    - entity_id: 1
+      customer_id: 2
+    - entity_id: 2
+      customer_id: null
+    - entity_id: 3
+      customer_id: null
+  sales/order:
+    - entity_id: 1
+      increment_id: 1000000001
+      quote_id: 1
+      billing_address_id: 1
+      customer_id: 2
+      customer_email: test2@test.de
+      customer_firstname: Testname
+      customer_lastname: Testname
+      customer_middlename: J
+      customer_prefix: Kaiser
+      customer_suffix: III
+      customer_taxvat: DE 987654321
+    - entity_id: 2
+      increment_id: 1000000002
+      quote_id: 2
+      billing_address_id: 2
+      customer_email: guest@guest.de
+      customer_firstname: Gast
+      customer_lastname: Gast
+  sales/order_grid:
+    - entity_id: 1
+      increment_id: 1000000001
+      customer_id: 2
+      shipping_name: Testname Testname
+      billing_name: Testname Testname
+  #TODO invoice, creditmemo
+  sales/quote_address:
+    - address_id: 1
+      address_type: billing
+      quote_id: 1
+      customer_id: 2
+      customer_address_id: 4
+      firstname: Somebody
+      lastname: Else
+      middlename:
+      prefix:
+      suffix:
+      company: ACME GmbH
+      postcode: 67890
+      city: Buxtehude
+      street: Am Arm 1
+      telephone: 555-12345
+      fax: 555-12345
+      vat_id: DE 987654321
+      country_id: DE
+      region_id: 88
+    - address_id: 2
+      address_type: billing
+      quote_id: 2
+      customer_id: null
+      customer_address_id: null
+      firstname: Gast
+      lastname: Gast
+      middlename:
+      prefix:
+      suffix:
+      company: Gastro
+      postcode: 111222
+      city: Gastdorf
+      street: Gaststraße 1
+      telephone:
+      fax:
+      vat_id:
+      country_id: DE
+      region_id: 88
+    - address_id: 3
+      address_type: billing
+      quote_id: 3
+      customer_id: null
+      customer_address_id: null
+      firstname: Anderer
+      lastname: Gast
+      middlename:
+      prefix:
+      suffix:
+      company:
+      postcode: 333444
+      city: Gastburg
+      street: Gastweg 2
+      telephone:
+      fax:
+      vat_id:
+      country_id: DE
+      region_id: 89
+  sales/order_address:
+    - entity_id: 1
+      address_type: billing
+      parent_id: 1
+      customer_id: 2
+      customer_address_id: 4
+      firstname: Testname
+      lastname: Testname
+      middlename: K
+      prefix: Dr. phil.
+      suffix:
+      company: ACME GmbH
+      postcode: 67890
+      city: Buxtehude
+      street: Am Arm 1
+      telephone: 555-12345
+      fax: 555-12345
+      vat_id: DE 987654321
+      country_id: DE
+      region_id: 88
+    - entity_id: 2
+      address_type: billing
+      parent_id: 2
+      customer_id: null
+      customer_address_id: null
+      firstname: Gast
+      lastname: Gast
+      middlename:
+      prefix:
+      suffix:
+      company: Gastro
+      postcode: 111222
+      city: Gastdorf
+      street: Gaststraße 1
+      telephone:
+      fax:
+      vat_id:
+      country_id: DE
+      region_id: 88
+  sales/quote_item: []
+  sales/order_item: []
+  newsletter/subscriber:
+    - subscriber_id: 1
+      customer_id: 0
+      subscriber_email: guest1@example.com
+    - subscriber_id: 2
+      customer_id: 0
+      subscriber_email: guest2@example.com
+    - subscriber_id: 3
+      customer_id: 1
+      subscriber_email: test@test.de
