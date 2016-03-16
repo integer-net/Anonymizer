@@ -27,7 +27,7 @@ before_deploy: .travis/bundle.sh
 deploy:
   provider: releases
   api_key:
-    secure: g7rb8j/spQ9gFnZ6qxJUWKt69llxFdIRpB3m4oiNNgK5hpu9DZSMkjZ5VWYefEkI9n7QVKqgDX4vfbGlgW1npTmeDjLUZAttOfO5Hkxz/4uRp7FvOlhWeZ3
+    secure: YBCy2em9MOCaxS5cG+MqUO0kcW7ELPXHSs6mpM/fG+CcKaSOlrEuXmxgaCC9OJsj3aybZJ7WeiuxphLpv7CcgN5/pv+RC1RyEU/5Mt13/fG4P4YNKCEmDPsSnPQVtLKQJIWby9jf0ZhznjJJ/SvwGYmfGF0mn3/yINg2eNF/f3Y=
   file:
     - "integernet-anonymizer.zip"
     - "integernet-anonymizer.tar.gz"
