@@ -24,14 +24,10 @@
     "repositories": [
         {
             "type": "composer",
-            "url": "http://packages.firegento.com"
+            "url": "https://packages.firegento.com"
 		}
 	],
     "authors":[
-        {
-            "name":"Andreas von Studnitz",
-            "email":"avs@integer-net.de"
-        },
         {
             "name":"Fabian Schmengler",
             "email":"fs@integer-net.de"
