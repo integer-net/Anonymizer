@@ -4,7 +4,9 @@ This module allows anonymizing customer data in a sensible way. It uses dummy da
 
 Facts
 -----
-[![Build Status (development)](https://travis-ci.org/integer-net/Anonymizer.svg?branch=development)](https://travis-ci.org/integer-net/Anonymizer) [![Scrutinizer Code Quality (development](https://scrutinizer-ci.com/g/integer-net/Anonymizer/badges/quality-score.png?b=development)](https://scrutinizer-ci.com/g/integer-net/Anonymizer/?branch=development)
+
+- **master** branch: [![Build Status (master)](https://travis-ci.org/integer-net/Anonymizer.svg?branch=master)](https://travis-ci.org/integer-net/Anonymizer) [![Scrutinizer Code Quality (master](https://scrutinizer-ci.com/g/integer-net/Anonymizer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/integer-net/Anonymizer/?branch=master)
+- **development** branch: [![Build Status (development)](https://travis-ci.org/integer-net/Anonymizer.svg?branch=development)](https://travis-ci.org/integer-net/Anonymizer) [![Scrutinizer Code Quality (development](https://scrutinizer-ci.com/g/integer-net/Anonymizer/badges/quality-score.png?b=development)](https://scrutinizer-ci.com/g/integer-net/Anonymizer/?branch=development)
 
 - version: 2.0.0-rc2
 - extension key: integer-net/anonymizer
@@ -30,6 +32,9 @@ If you have n98-magerun installed, you can also use this command:
 
     n98-magerun db:anonymize
 
+[![asciicast](https://asciinema.org/a/9j4kylm874s4legd8ddbj494m.png)](https://asciinema.org/a/9j4kylm874s4legd8ddbj494m)
+
+
 Requirements
 ------------
 - PHP >= 5.4
@@ -45,6 +50,8 @@ Installation Instructions
 -------------------------
 1. Install via composer: `composer require integer-net/anonymizer`
 2. Configure Magento-PSR-0-Autoloader to use the composer autoloader. Add this to the `global` node of your `app/etc/local.xml`: `<composer_vendor_path><![CDATA[{{root_dir}}/vendor]]></composer_vendor_path>`
+
+Alternatively download the archive from the [Github release page](https://github.com/integer-net/Anonymizer/releases) and extract it into your installation. It contains the Faker library and no additional configuration is required.
 
 Support
 -------
