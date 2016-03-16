@@ -34,6 +34,8 @@ If you have n98-magerun installed, you can also use this command:
 
     n98-magerun db:anonymize
 
+**Be aware that the process will run very long if you have more than a few thousand orders. Consider deleting old sales data first.**
+	
 [![asciicast](https://asciinema.org/a/9j4kylm874s4legd8ddbj494m.png)](https://asciinema.org/a/9j4kylm874s4legd8ddbj494m)
 
 
@@ -53,7 +55,7 @@ Installation Instructions
 1. Install via composer: `composer require integer-net/anonymizer`
 2. Configure Magento-PSR-0-Autoloader to use the composer autoloader. Add this to the `global` node of your `app/etc/local.xml`:
 
-        `<composer_vendor_path><![CDATA[{{root_dir}}/vendor]]></composer_vendor_path>`
+        <composer_vendor_path><![CDATA[{{root_dir}}/vendor]]></composer_vendor_path>
 
 Alternatively download the archive from the [Github release page](https://github.com/integer-net/Anonymizer/releases) and extract it into your installation. It contains the Faker library and no additional configuration is required.
 
