@@ -27,7 +27,7 @@ before_deploy: .travis/bundle.sh
 deploy:
   provider: releases
   api_key:
-    secure: r5HmWfpDi17JJVEfcAjmkpQH9McW9O0UoBzPS76EduXb8SPjMgEiI2eRoZuQxkjBn2GxKn07gTvkhKT27YWOQSzzrvfHJjJtPajpxLlCX9pmUqDP+lIJ/4273mv+urhCyIrAAGpMMeChmKdXMHOCaSvbKyP7TwsCUYQQnqw8gXK9je4T0xUOg9KahA7ENYVnBasshvFsUAhe7pLXU57DqwNaKkZq/K8B0mCAc33rEaKbUc0yjS6D0S4vA7I1tKfAATdKxbrOlYYFtSDOijhnYeGeJsWRw09E7JIYsDIRgV+nv+nKDLYAnSum1TmQtTVGh3jVNKVHoV4LRjp4QG+BnI5LwEcRrYPp8MMmwTepNnOH4Zlyngh35D8GcDTasmOOr4nicGbaf4HhErj+EJcBJfsMPhjtsmhQugC0zJXqYlB+QA3tgL5rgLBwkACizvdZonqiYZwydQgSMJHftDdFdxQH41b+IvYun1fCZ+HVOiFBGzz8U8DF/ZnTSE46geUB4uptDfFBBa9g8RTZD1d/MnIst8devBXvCwmNzuMgnKsOLyqg+c/E7ZA4IvQSnIRxfJSUVmq26BZC2B86V9jh2kSiYwpEPS9c0T4apZ8kRm6rJC91n6NknvE81B+ZUkCc7RLLoOp6pys/Xh/dHu4Kqehs7Bcbe0esKwEbIpZJeqc=
+    secure: YBCy2em9MOCaxS5cG+MqUO0kcW7ELPXHSs6mpM/fG+CcKaSOlrEuXmxgaCC9OJsj3aybZJ7WeiuxphLpv7CcgN5/pv+RC1RyEU/5Mt13/fG4P4YNKCEmDPsSnPQVtLKQJIWby9jf0ZhznjJJ/SvwGYmfGF0mn3/yINg2eNF/f3Y=
   file:
     - "integernet-anonymizer.zip"
     - "integernet-anonymizer.tar.gz"
