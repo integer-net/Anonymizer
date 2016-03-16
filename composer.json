@@ -4,12 +4,17 @@
     "type": "magento-module",
     "description": "Anonymizes all Customer Data",
     "require": {
-        "magento-hackathon/magento-composer-installer": "*",
         "fzaninotto/faker": ">=1.0",
         "firegento/psr0autoloader": ">=0.1.0"
     },
+    "autoload": {
+        "psr-4": {
+            "IntegerNet\\Anonymizer\\": "src/lib/IntegerNet/Anonymizer"
+        }
+    },
     "require-dev": {
-         "ecomdev/ecomdev_phpunit": "~0.3.7"
+        "ecomdev/ecomdev_phpunit": "~0.3.7",
+        "aoepeople/composer-installers": "*"
     },
     "repositories": [
         {
