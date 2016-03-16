@@ -13,6 +13,7 @@
         </models>
         <psr0_namespaces>
             <IntegerNet />
+            <Faker />
         </psr0_namespaces>
     </global>
     <phpunit>
