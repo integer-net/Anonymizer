@@ -12,6 +12,11 @@
             "IntegerNet\\Anonymizer\\": "src/lib/IntegerNet/Anonymizer"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "IntegerNet\\Anonymizer\\": "test/IntegerNet/Anonymizer"
+        }
+    },
     "require-dev": {
         "ecomdev/ecomdev_phpunit": "~0.3.7",
         "aoepeople/composer-installers": "*"
