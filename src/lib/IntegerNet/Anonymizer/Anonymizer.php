@@ -38,6 +38,9 @@ class Anonymizer
     public function anonymize(array $inputData)
     {
         foreach ($inputData as $entity) {
+            if (! $entity->isAnonymizable()) {
+                continue;
+            }
             foreach ($entity->getValues() as $value) {
                 $value->setValue($this->provider->getFakerData(
                     $value->getFakerFormatter(), $this->_getFieldIdentifier($entity, $value), $value->isUnique()));

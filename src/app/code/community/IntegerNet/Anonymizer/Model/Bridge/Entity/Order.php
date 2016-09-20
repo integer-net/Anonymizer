@@ -30,7 +30,13 @@ class IntegerNet_Anonymizer_Model_Bridge_Entity_Order extends IntegerNet_Anonymi
 
     function __construct()
     {
+        parent::__construct();
         $this->_entity = Mage::getModel('sales/order');
+    }
+
+    function isAnonymizable()
+    {
+        return ! $this->excludedEmailDomains->matches($this->_entity->getData('customer_email'));
     }
 
     protected function _setIdentifier()

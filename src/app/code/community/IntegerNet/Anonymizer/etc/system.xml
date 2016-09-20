@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <dev>
+            <groups>
+                <integernet_anonymizer translate="label,comment" module="integernet_anonymizer">
+                    <label>IntegerNet_Anonymizer</label>
+                    <show_in_default>1</show_in_default>
+                    <sort_order>900</sort_order>
+                    <fields>
+                        <excluded_email_domains>
+                            <label>Excluded Email Domains</label>
+                            <comment>Comma separated list of domains. Customers with email addresses at these domains will not be anonymized</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </excluded_email_domains>
+                    </fields>
+                </integernet_anonymizer>
+            </groups>
+        </dev>
+    </sections>
+</config>

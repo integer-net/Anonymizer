@@ -45,6 +45,25 @@ abstract class IntegerNet_Anonymizer_Model_Bridge_Entity_Abstract
      * @var int Current page of collection for chunking
      */
     protected $currentPage = 0;
+    /**
+     * @var \IntegerNet\Anonymizer\Config\ExcludedEmailDomains
+     */
+    protected $excludedEmailDomains;
+
+    public function __construct()
+    {
+        $this->excludedEmailDomains = Mage::helper(IntegerNet_Anonymizer_Helper_Data::ALIAS)->excludedEmailDomains();
+    }
+
+    /**
+     * Returns true if entity is anonymizable, false if it should be left unchanged
+     *
+     * @return bool
+     */
+    function isAnonymizable()
+    {
+        return true;
+    }
 
     /**
      * Returns identifier, for example the customer email address. Entities with the same identifier will get the same

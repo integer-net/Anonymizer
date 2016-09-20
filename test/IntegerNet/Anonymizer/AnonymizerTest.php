@@ -21,7 +21,7 @@ class AnonymizerTest extends \PHPUnit_Framework_TestCase
     {
         $provider = $this->getMock(Provider::__CLASS);
         $provider->expects($this->once())->method('initialize');
-        $provider->expects($this->exactly(count($expectedValues)))->method('getFakerData')
+        $provider->method('getFakerData')
             ->willReturnCallback(function($formatter, $identifier) {
                 return sprintf('%s_%s', $formatter, explode('|', $identifier, 2)[0]);
             });
@@ -69,12 +69,14 @@ class AnonymizerTest extends \PHPUnit_Framework_TestCase
                     new AnonymizableMock(['email' => 'max.mustermann2@example.com', 'firstName' => 'Max',  'lastName' => 'Mustermann']),
                     new AnonymizableMock(['email' => 'maxi.musterfrau@example.com', 'firstName' => 'Maxi', 'lastName' => 'Musterfrau']),
                     new AnonymizableMock(['email' => 'max.mustermann@example.com',  'firstName' => 'Max',  'lastName' => 'Mustermann', 'streetAddress' => 'Musterstraße 42']),
+                    new AnonymizableMock(['email' => 'max.mustermann@example.com',  'firstName' => 'Max',  'lastName' => 'Mustermann'], null, false),
                 ),
                 'expectedValues' => array(
                     'email_max.mustermann@example.com',  'firstName_max.mustermann@example.com',  'lastName_max.mustermann@example.com',
                     'email_max.mustermann2@example.com', 'firstName_max.mustermann2@example.com', 'lastName_max.mustermann2@example.com',
                     'email_maxi.musterfrau@example.com', 'firstName_maxi.musterfrau@example.com', 'lastName_maxi.musterfrau@example.com',
-                    'email_max.mustermann@example.com',  'firstName_max.mustermann@example.com',  'lastName_max.mustermann@example.com', 'streetAddress_max.mustermann@example.com'
+                    'email_max.mustermann@example.com',  'firstName_max.mustermann@example.com',  'lastName_max.mustermann@example.com', 'streetAddress_max.mustermann@example.com',
+                    'max.mustermann@example.com',  'Max',  'Mustermann',
                 )
             )
         );

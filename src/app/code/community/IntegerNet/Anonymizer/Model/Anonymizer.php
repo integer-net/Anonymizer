@@ -52,7 +52,7 @@ class IntegerNet_Anonymizer_Model_Anonymizer
         $this->_updater->setShowProgress($showProgress);
     }
     /**
-     * @param $steps How often progress output should be refreshed (default is 1 = after every entity update; example: 10 = every 10 entity updates)
+     * @param int $steps How often progress output should be refreshed (default is 1 = after every entity update; example: 10 = every 10 entity updates)
      */
     public function setProgressSteps($steps)
     {

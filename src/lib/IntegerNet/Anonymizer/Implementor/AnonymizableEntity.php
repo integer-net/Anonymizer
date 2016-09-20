@@ -21,6 +21,13 @@ interface AnonymizableEntity
      * @return string
      */
     function getEntityName();
+
+    /**
+     * Returns true if entity is anonymizable, false if it should be left unchanged
+     *
+     * @return bool
+     */
+    function isAnonymizable();
     /**
      * Returns identifier, for example the customer email address. Entities with the same identifier will get the same
      * anonymized values.

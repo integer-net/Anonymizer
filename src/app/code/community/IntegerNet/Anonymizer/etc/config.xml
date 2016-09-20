@@ -11,9 +11,14 @@
                 <class>IntegerNet_Anonymizer_Model</class>
             </integernet_anonymizer>
         </models>
+        <helpers>
+            <integernet_anonymizer>
+                <class>IntegerNet_Anonymizer_Helper</class>
+            </integernet_anonymizer>
+        </helpers>
         <psr0_namespaces>
-            <IntegerNet />
-            <Faker />
+            <IntegerNet/>
+            <Faker/>
         </psr0_namespaces>
     </global>
     <phpunit>

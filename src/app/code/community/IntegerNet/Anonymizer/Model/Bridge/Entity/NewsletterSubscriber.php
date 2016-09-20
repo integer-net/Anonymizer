@@ -20,7 +20,13 @@ class IntegerNet_Anonymizer_Model_Bridge_Entity_NewsletterSubscriber
 
     function __construct()
     {
+        parent::__construct();
         $this->_entity = Mage::getModel('newsletter/subscriber');
+    }
+
+    function isAnonymizable()
+    {
+        return ! $this->excludedEmailDomains->matches($this->_entity->getData('subscriber_email'));
     }
 
     /**

@@ -26,7 +26,13 @@ class IntegerNet_Anonymizer_Model_Bridge_Entity_Customer extends IntegerNet_Anon
 
     function __construct()
     {
+        parent::__construct();
         $this->_entity = Mage::getModel('customer/customer');
+    }
+
+    function isAnonymizable()
+    {
+        return ! $this->excludedEmailDomains->matches($this->_entity->getData('email'));
     }
 
     protected function _setIdentifier()

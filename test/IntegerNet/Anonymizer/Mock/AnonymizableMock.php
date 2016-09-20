@@ -26,15 +26,25 @@ class AnonymizableMock implements AnonymizableEntity
     private $data = array();
     private $identifier = '';
     private $uniqueKey = null;
+    /**
+     * @var bool
+     */
+    private $isAnonymizable;
 
     /**
      * @param mixed[] $data data in the form [formatter => value], the first entry will be used as identifier
      * @param string|null $uniqueKey
      */
-    function __construct($data = array(), $uniqueKey = null)
+    function __construct($data = array(), $uniqueKey = null, $isAnonymizable = true)
     {
         $this->uniqueKey = $uniqueKey;
         $this->setRawData($data);
+        $this->isAnonymizable = $isAnonymizable;
+    }
+
+    function isAnonymizable()
+    {
+        return $this->isAnonymizable;
     }
 
     /**
