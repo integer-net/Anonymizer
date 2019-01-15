@@ -22,20 +22,30 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     }
     protected function _getEntityModels()
     {
-        $models = array(
-            'integernet_anonymizer/bridge_entity_customer',
-            'integernet_anonymizer/bridge_entity_address_customerAddress',
-            'integernet_anonymizer/bridge_entity_address_quoteAddress',
-            'integernet_anonymizer/bridge_entity_address_orderAddress',
-            'integernet_anonymizer/bridge_entity_newsletterSubscriber',
-            // Models with grid table must come last!
-            'integernet_anonymizer/bridge_entity_order',
-        );
-        if (Mage::getEdition() == MAGE::EDITION_ENTERPRISE) {
-            $models[] = 'integernet_anonymizer/bridge_entity_enterprise_giftregistry';
-            $models[] = 'integernet_anonymizer/bridge_entity_enterprise_giftregistryPerson';
+        $entityModelsConfigXml = Mage::getConfig()->getNode('global/integernet_anonymizer/entity_models');
+
+        $entityModelsConfigArray = $entityModelsConfigXml->asArray();
+        $entityModelsConfigArray = $this->_sortEntityModelsConfig($entityModelsConfigArray);
+
+        $entityModels = [];
+
+        foreach ($entityModelsConfigArray as $entityModelsConfig) {
+            if (Mage::getModel($entityModelsConfig['class'])) {
+                $entityModels[] = $entityModelsConfig['class'];
+            }
         }
-        return $models;
+
+        return $entityModels;
+    }
+    protected function _sortEntityModelsConfig($entityModelsConfig)
+    {
+        function sortEntityModels($entityModel1, $entityModel2)
+        {
+            return strcmp($entityModel1['sort'], $entityModel2['sort']);
+        }
+
+        usort($entityModelsConfig, 'sortEntityModels');
+        return $entityModelsConfig;
     }
     /**
      * @param resource $stream stream resource used for output (for example opened file pointer or STDOUT)
