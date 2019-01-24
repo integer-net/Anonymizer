@@ -174,4 +174,12 @@ abstract class IntegerNet_Anonymizer_Model_Bridge_Entity_Abstract
         return $iterator;
     }
 
+    /**
+     * Check if the entity exists
+     * @return bool
+     */
+    public function entityExists()
+    {
+        return (bool)$this->_entity;
+    }
 }

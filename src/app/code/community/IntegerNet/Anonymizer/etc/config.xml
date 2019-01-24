@@ -15,6 +15,43 @@
             <IntegerNet />
             <Faker />
         </psr0_namespaces>
+        <integernet_anonymizer>
+            <entity_models>
+                <customer>
+                    <class>integernet_anonymizer/bridge_entity_customer</class>
+                    <sort>100</sort>
+                </customer>
+                <customer_address>
+                    <class>integernet_anonymizer/bridge_entity_address_customerAddress</class>
+                    <sort>200</sort>
+                </customer_address>
+                <quote_address>
+                    <class>integernet_anonymizer/bridge_entity_address_quoteAddress</class>
+                    <sort>300</sort>
+                </quote_address>
+                <order_address>
+                    <class>integernet_anonymizer/bridge_entity_address_orderAddress</class>
+                    <sort>400</sort>
+                </order_address>
+                <newsletter_subscriber>
+                    <class>integernet_anonymizer/bridge_entity_newsletterSubscriber</class>
+                    <sort>500</sort>
+                </newsletter_subscriber>
+                <enterprise_giftregistry>
+                    <class>integernet_anonymizer/bridge_entity_enterprise_giftregistry</class>
+                    <sort>600</sort>
+                </enterprise_giftregistry>
+                <enterprise_giftregistry_person>
+                    <class>integernet_anonymizer/bridge_entity_enterprise_giftregistryPerson</class>
+                    <sort>700</sort>
+                </enterprise_giftregistry_person>
+                <!-- Models with grid table must come last! -->
+                <order>
+                    <class>integernet_anonymizer/bridge_entity_order</class>
+                    <sort>800</sort>
+                </order>
+            </entity_models>
+        </integernet_anonymizer>
     </global>
     <phpunit>
         <suite>
