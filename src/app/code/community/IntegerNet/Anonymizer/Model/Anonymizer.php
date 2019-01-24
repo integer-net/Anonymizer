@@ -30,7 +30,9 @@ class IntegerNet_Anonymizer_Model_Anonymizer
         $entityModels = [];
 
         foreach ($entityModelsConfigArray as $entityModelsConfig) {
-            if (Mage::getModel($entityModelsConfig['class'])) {
+            $entityModel = Mage::getModel($entityModelsConfig['class']);
+            if ($entityModel instanceof IntegerNet_Anonymizer_Model_Bridge_Entity_Abstract
+                && $entityModel->entityExists()) {
                 $entityModels[] = $entityModelsConfig['class'];
             }
         }
@@ -39,12 +41,12 @@ class IntegerNet_Anonymizer_Model_Anonymizer
     }
     protected function _sortEntityModelsConfig($entityModelsConfig)
     {
-        function sortEntityModels($entityModel1, $entityModel2)
-        {
-            return strcmp($entityModel1['sort'], $entityModel2['sort']);
-        }
-
-        usort($entityModelsConfig, 'sortEntityModels');
+        usort(
+            $entityModelsConfig,
+            function ($entityModel1, $entityModel2) {
+                return strcmp($entityModel1['sort'], $entityModel2['sort']);
+            }
+        );
         return $entityModelsConfig;
     }
     /**
