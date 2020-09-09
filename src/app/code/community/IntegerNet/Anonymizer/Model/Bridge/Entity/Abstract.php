@@ -91,6 +91,8 @@ abstract class IntegerNet_Anonymizer_Model_Bridge_Entity_Abstract
     public function setRawData($data)
     {
         $this->_entity->addData($data);
+        // set as original data to avoid reload on save
+        $this->_entity->setOrigData();
         // reset derived attributes:
         $this->_setIdentifier();
         $this->_values = null;
